@@ -24,7 +24,8 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	brd(gfx)
 {
 }
 
@@ -42,4 +43,6 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	brd.DrawBorder();
+	brd.DrawCell(Vei2(0, 0), Colors::Blue);
 }

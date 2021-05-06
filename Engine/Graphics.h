@@ -54,6 +54,10 @@ public:
 	void BeginFrame();
 	void DrawRect(int x0, int y0, int x1, int y1, Color c);
 	void DrawRect(const RectI& rect, Color c);
+	void DrawRectDim(int x0, int y0, int width, int height, Color c)
+	{
+		DrawRect(x0, y0, x0 + width, y0 + height, c);
+	}
 	void PutPixel( int x,int y,int r,int g,int b )
 	{
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
