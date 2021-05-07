@@ -23,7 +23,6 @@ void Board::DrawBorder() const
 {
 	const int left = Sloc.x;
 	const int top = 0;
-	//const int rightttt = Sloc.y 
 	const int right = Sloc.x + (BorderWidth + BorderPad) * 2 + Width * CellDimension + CellDimension;
 	const int bottom = gfx.ScreenHeight;
 
@@ -41,4 +40,14 @@ int Board::GetGridWidth() const
 int Board::GetGridHeight() const
 {
 	return Height;
+}
+
+int Board::GetCellDimension() const
+{
+	return CellDimension;
+}
+
+Vei2 Board::GetSloc() const
+{
+	return Sloc;
 }

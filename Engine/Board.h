@@ -15,7 +15,8 @@ public:
 	void DrawBorder() const;
 	int GetGridWidth() const;
 	int GetGridHeight() const;
-
+	int GetCellDimension() const;
+	Vei2 GetSloc() const;
 
 private:
 	Graphics& gfx;

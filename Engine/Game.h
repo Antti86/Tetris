@@ -24,6 +24,8 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Board.h"
+#include "Vec2.h"
+#include "Blocks.h"
 
 class Game
 {
@@ -44,6 +46,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-
+	
 	Board brd;
+	Vei2 delta_loc = { 0, -1 };
 };
