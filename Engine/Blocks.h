@@ -19,14 +19,15 @@ private:
 		BlockSeg(Vei2& in_pos, Color c);
 		void Draw(Board& brd) const;
 		void Moveby(Vei2& delta_loc);
+		bool Empty = true;
 	private:
 		Vei2 pos;
-		bool Empty = true;
+		
 		Color BColor;
 	};
 
 public:
-	Blocks(const Vei2& pos, const BlockType& type);
+	Blocks(const Vei2& pos, const BlockType& type, Color c);
 	void Draw(Board& brd) const;
 	void MoveBy(Vei2& delta_loc);
 
@@ -34,7 +35,7 @@ public:
 private:
 	std::vector<BlockSeg> MovingBlocks;
 
-	static constexpr int x = 3;		//vecktorin koko
-	static constexpr int y = 3;
-	static constexpr int total = x * y;
+	static constexpr int viisto = 3;		//vecktorin koko
+	static constexpr int pysty = 3;
+	static constexpr int total = viisto * pysty;
 };
