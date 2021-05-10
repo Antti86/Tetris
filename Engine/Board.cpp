@@ -17,6 +17,24 @@ void Board::DrawCell(const Vei2& pos, Color c) const
 
 void Board::DrawBlock()
 {
+	for (int y = 0; y < Height; y++)
+	{
+		for (int x = 0; x < Width; x++)
+		{
+			switch (GetCellColor({x, y}))
+			{
+			case CellColor::Blue:
+				DrawCell({ x,y }, Colors::Blue);
+				break;
+			case CellColor::Green:
+				DrawCell({ x,y }, Colors::Green);
+				break;
+			case CellColor::Red:
+				DrawCell({ x,y }, Colors::Red);
+				break;
+			}
+		}
+	}
 }
 
 void Board::DrawBorder() const
@@ -50,4 +68,9 @@ int Board::GetCellDimension() const
 Vei2 Board::GetSloc() const
 {
 	return Sloc;
+}
+
+Board::CellColor Board::GetCellColor(const Vei2& pos) const
+{
+	return Content[static_cast<std::vector<Board::CellColor, std::allocator<Board::CellColor>>::size_type>(pos.y) * Width + pos.x];
 }

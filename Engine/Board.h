@@ -8,6 +8,14 @@
 
 class Board
 {
+	enum class CellColor
+	{
+		Empty,
+		Blue,
+		Green,
+		Red,
+		Yellow
+	};
 public:
 	Board(Graphics& gfx);
 	void DrawCell(const Vei2& pos, Color c) const;
@@ -17,6 +25,7 @@ public:
 	int GetGridHeight() const;
 	int GetCellDimension() const;
 	Vei2 GetSloc() const;
+	CellColor GetCellColor(const Vei2& pos) const;
 
 private:
 	Graphics& gfx;
@@ -28,5 +37,5 @@ private:
 	int BorderPad = 1;
 	int BlockPad = 1;
 	Color BorderColor = Colors::Gray;
-
+	std::vector<CellColor> Content;
 };

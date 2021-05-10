@@ -39,10 +39,11 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	//test.MoveBy(delta_loc);
 }
 
 void Game::ComposeFrame()
 {
 	brd.DrawBorder();
-	
+	test.Draw(brd);
 }

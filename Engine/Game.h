@@ -48,5 +48,6 @@ private:
 	/********************************/
 	
 	Board brd;
-	Vei2 delta_loc = { 0, -1 };
+	Vei2 delta_loc = { 0, 1 };
+	Blocks test = { Blocks::BlockType::I, Colors::Blue };
 };

@@ -7,6 +7,7 @@
 
 class Blocks
 {
+public:
 	enum class BlockType
 	{
 		I,
@@ -27,14 +28,14 @@ private:
 	};
 
 public:
-	Blocks(const Vei2& pos, const BlockType& type, Color c);
+	Blocks(const BlockType& type, Color c);
 	void Draw(Board& brd) const;
 	void MoveBy(Vei2& delta_loc);
 
 
 private:
 	std::vector<BlockSeg> MovingBlocks;
-
+	Vei2 StartPos;
 	static constexpr int viisto = 3;		//vecktorin koko
 	static constexpr int pysty = 3;
 	static constexpr int total = viisto * pysty;
