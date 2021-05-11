@@ -55,6 +55,44 @@ void Blocks::MoveBy(Vei2& delta_loc)
 	}
 }
 
+void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
+{
+
+	/*std::vector<BlockSeg> ActiveBlocks;
+	std::copy_if(MovingBlocks.begin(), MovingBlocks.end(), ActiveBlocks.begin(), 
+		[] (BlockSeg& n)
+		{
+			return n.Empty == true;
+		});*/
+
+
+
+	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard() )
+	{
+		delta_loc = {-1, 1};
+	}
+	else if (kbd.KeyIsPressed(VK_RIGHT) && InSideBoardGrid(brd))
+	{
+		delta_loc = { 1, 1 };
+	}
+	else
+	{
+		delta_loc = { 0, 1 };
+	}
+}
+
+bool Blocks::InSideBoardGrid(const Board& brd) const
+{
+	bool t = false;
+
+	for (auto& n : MovingBlocks)
+	{
+		
+	}
+}
+
+
+
 Blocks::BlockSeg::BlockSeg(Vei2& in_pos, Color c)
 	:
 	pos(in_pos),
@@ -70,4 +108,9 @@ void Blocks::BlockSeg::Draw(Board& brd) const
 void Blocks::BlockSeg::Moveby(Vei2& delta_loc)
 {
 	pos += delta_loc;
+}
+
+Vei2 Blocks::BlockSeg::GetPos() const
+{
+	return pos;
 }

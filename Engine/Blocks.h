@@ -4,6 +4,8 @@
 #include "Colors.h"
 #include <random>
 #include "Board.h"
+#include "Keyboard.h"
+#include <algorithm>
 
 class Blocks
 {
@@ -20,6 +22,7 @@ private:
 		BlockSeg(Vei2& in_pos, Color c);
 		void Draw(Board& brd) const;
 		void Moveby(Vei2& delta_loc);
+		Vei2 GetPos() const;
 		bool Empty = true;
 	private:
 		Vei2 pos;
@@ -31,10 +34,11 @@ public:
 	Blocks(const BlockType& type, Color c);
 	void Draw(Board& brd) const;
 	void MoveBy(Vei2& delta_loc);
-
-
+	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
+	bool InSideBoardGrid(const Board& brd) const;
 private:
 	std::vector<BlockSeg> MovingBlocks;
+	
 	Vei2 StartPos;
 	static constexpr int viisto = 3;		//vecktorin koko
 	static constexpr int pysty = 3;

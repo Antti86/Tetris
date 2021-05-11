@@ -74,3 +74,9 @@ Board::CellColor Board::GetCellColor(const Vei2& pos) const
 {
 	return Content[static_cast<std::vector<Board::CellColor, std::allocator<Board::CellColor>>::size_type>(pos.y) * Width + pos.x];
 }
+
+bool Board::IsInsideBoard(const Vei2& target) const
+{
+	return target.x >= Sloc.x && target.x <= GetGridWidth() &&
+		Sloc.y >= Sloc.y && target.y <= GetGridHeight();
+}

@@ -39,7 +39,14 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	//test.MoveBy(delta_loc);
+	test.Movement(delta_loc, wnd.kbd, brd);
+	BlockMoveCounter += 1.0f;
+	if (BlockMoveCounter >= BlockMoveRate)
+	{
+		test.MoveBy(delta_loc);
+		BlockMoveCounter = 0;
+	}
+
 }
 
 void Game::ComposeFrame()

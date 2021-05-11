@@ -26,7 +26,7 @@ public:
 	int GetCellDimension() const;
 	Vei2 GetSloc() const;
 	CellColor GetCellColor(const Vei2& pos) const;
-
+	bool IsInsideBoard(const Vei2& target) const;
 private:
 	Graphics& gfx;
 	Vei2 Sloc = { 180, 20 };
