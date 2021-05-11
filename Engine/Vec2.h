@@ -42,6 +42,10 @@ public:
 	{
 		return *this = *this - rhs;
 	}
+	bool operator <(const Vec2_& rhs) const
+	{
+		return *this < rhs;
+	}
 	T GetLength() const
 	{
 		return (T)std::sqrt(GetLengthSq());

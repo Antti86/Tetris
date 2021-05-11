@@ -35,7 +35,8 @@ public:
 	void Draw(Board& brd) const;
 	void MoveBy(Vei2& delta_loc);
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
-	bool InSideBoardGrid(const Board& brd) const;
+private:
+	Vei2 MostLeftBlock() const;
 private:
 	std::vector<BlockSeg> MovingBlocks;
 	

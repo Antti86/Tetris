@@ -77,6 +77,6 @@ Board::CellColor Board::GetCellColor(const Vei2& pos) const
 
 bool Board::IsInsideBoard(const Vei2& target) const
 {
-	return target.x >= Sloc.x && target.x <= GetGridWidth() &&
-		Sloc.y >= Sloc.y && target.y <= GetGridHeight();
+	return target.x >= 0 && target.x <= GetGridWidth() &&
+		target.y >= 0 && target.y <= GetGridHeight();
 }

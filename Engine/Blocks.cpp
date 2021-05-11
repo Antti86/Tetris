@@ -30,8 +30,6 @@ Blocks::Blocks(const BlockType& type, Color c)
 				}
 				
 			}
-			//bricks.emplace_back(Brick(RectF(topleft + Vec2(x * brickWidth, y * brickHeight),
-				//brickWidth, brickHeight), c));
 		}
 	}
 }
@@ -58,20 +56,11 @@ void Blocks::MoveBy(Vei2& delta_loc)
 void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 {
 
-	/*std::vector<BlockSeg> ActiveBlocks;
-	std::copy_if(MovingBlocks.begin(), MovingBlocks.end(), ActiveBlocks.begin(), 
-		[] (BlockSeg& n)
-		{
-			return n.Empty == true;
-		});*/
-
-
-
-	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard() )
+	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostLeftBlock()) )
 	{
 		delta_loc = {-1, 1};
 	}
-	else if (kbd.KeyIsPressed(VK_RIGHT) && InSideBoardGrid(brd))
+	else if (kbd.KeyIsPressed(VK_RIGHT) )
 	{
 		delta_loc = { 1, 1 };
 	}
@@ -81,14 +70,24 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 }
 
-bool Blocks::InSideBoardGrid(const Board& brd) const
-{
-	bool t = false;
 
-	for (auto& n : MovingBlocks)
-	{
-		
-	}
+Vei2 Blocks::MostLeftBlock() const
+{
+	
+	auto n = std::min_element(MovingBlocks.begin(), MovingBlocks.end(), 
+		[] (const BlockSeg& l, const BlockSeg& r)
+		{
+			return l.GetPos().x < r.GetPos().x;
+			
+		});
+
+
+	return n->GetPos();
+
+
+
+
+
 }
 
 
