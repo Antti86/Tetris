@@ -6,6 +6,7 @@
 #include "Board.h"
 #include "Keyboard.h"
 #include <algorithm>
+#include <iterator>
 
 class Blocks
 {
@@ -37,7 +38,7 @@ public:
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 private:
 	Vei2 MostLeftBlock() const;
-	Vei2 MostLeftBlockTest() const;
+	Vei2 MostLeftBlockTest();
 private:
 	std::vector<BlockSeg> MovingBlocks;
 	

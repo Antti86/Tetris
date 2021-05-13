@@ -20,7 +20,7 @@ Blocks::Blocks(const BlockType& type, Color c)
 				}
 				int i = y * viisto + x;
 				MovingBlocks.emplace_back(loc, c);
-				if (x == 0)
+				if (x == 2)
 				{
 					MovingBlocks[i].Empty = false;
 				}
@@ -56,7 +56,7 @@ void Blocks::MoveBy(Vei2& delta_loc)
 void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 {
 
-	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostLeftBlockTest()) )
+	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostLeftBlockTest() += {-1, 0}))
 	{
 		delta_loc = {-1, 0};
 	}
@@ -107,23 +107,22 @@ Vei2 Blocks::MostLeftBlock() const
 	return pos;
 }
 
-Vei2 Blocks::MostLeftBlockTest() const
+Vei2 Blocks::MostLeftBlockTest()
 {
-	/*auto it = std::find_if(MovingBlocks.begin(), MovingBlocks.end(), 
-		[&] (const BlockSeg& l, const BlockSeg& r)
+	std::vector<BlockSeg> test;
+	std::copy_if(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(test),
+		[] (BlockSeg& l)
 		{
-			return l.GetPos() < r.GetPos();
+			return l.Empty == false;
 		});
-	return it->GetPos();*/
 
-	auto n = std::min_element(MovingBlocks.begin(), MovingBlocks.end(),
-	[] (const BlockSeg& l, const BlockSeg& r)
+	auto n = std::min_element(test.begin(), test.end(),
+	[] (BlockSeg& l, BlockSeg& r)
 	{
 		
-		return l.Empty == false && l.GetPos().x < r.GetPos().x;
+		return l.GetPos().x < r.GetPos().x;
 
 	});
-
 
 	return n->GetPos();
 }
