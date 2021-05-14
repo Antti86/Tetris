@@ -4,23 +4,24 @@ Blocks::Blocks(const BlockType& type, Color c)
 	:
 	StartPos({9, 3})
 {
-	MovingBlocks.reserve(total);
+	MovingBlocks.reserve(total);		
 	Vei2 loc = StartPos;
-	if (type == BlockType::I)
+	for (int y = 0; y < pysty; y++)
 	{
-		for (int y = 0; y < pysty; y++)
+		loc.y += 1;
+		for (int x = 0; x < viisto; x++)
 		{
-			loc.y += 1;
-			for (int x = 0; x < viisto; x++)
+			loc.x += 1;
+			if (loc.x >= StartPos.x + 3)
 			{
-				loc.x += 1;
-				if (loc.x >= StartPos.x + 3)
-				{
-					loc.x = StartPos.x;
-				}
-				int i = y * viisto + x;
-				MovingBlocks.emplace_back(loc, c);
-				if (x == 2)
+				loc.x = StartPos.x;
+			}
+			int i = y * viisto + x;
+			MovingBlocks.emplace_back(loc, c);
+
+			if (type == BlockType::I)
+			{
+				if (x == 1)
 				{
 					MovingBlocks[i].Empty = false;
 				}
@@ -28,10 +29,13 @@ Blocks::Blocks(const BlockType& type, Color c)
 				{
 					MovingBlocks[i].Empty = true;
 				}
-				
 			}
+
+
+
 		}
 	}
+
 }
 
 void Blocks::Draw(Board& brd) const
@@ -56,13 +60,17 @@ void Blocks::MoveBy(Vei2& delta_loc)
 void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 {
 
-	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostLeftBlockTest() += {-1, 0}))
+	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}))
 	{
 		delta_loc = {-1, 0};
 	}
-	else if (kbd.KeyIsPressed(VK_RIGHT) )
+	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}))
 	{
 		delta_loc = { 1, 0 };
+	}
+	else if (kbd.KeyIsPressed(VK_UP))
+	{
+		Rotate(BlockType::I);
 	}
 	else
 	{
@@ -70,12 +78,37 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 }
 
+void Blocks::Rotate(BlockType type)
+{
+	for (int y = 0; y < pysty; y++)
+	{
+		for (int x = 0; x < viisto; x++)
+		{
+			int i = y * viisto + x;
+			if (type == BlockType::I)
+			{
+				if (MovingBlocks[x == 1].Empty)
+				{
+					MovingBlocks[x == 1].Empty = false;
+				}
+				else if (MovingBlocks[y == 1].Empty)
+				{
+					MovingBlocks[y == 1].Empty = false;
+				}
+			}
 
-Vei2 Blocks::MostLeftBlock() const
+
+
+		}
+	}
+}
+
+
+Vei2 Blocks::MostSideBlock(const char m) const
 {
 	Vei2 pos;
 	Vei2 temp;
-	bool found = false;
+	bool FirstActive = false;
 	for (int i = 0; i < MovingBlocks.size(); i++)
 	{
 		if (MovingBlocks[i].Empty)
@@ -85,20 +118,34 @@ Vei2 Blocks::MostLeftBlock() const
 		else
 		{
 			temp = MovingBlocks[i].GetPos();
-			if (!found)
+			if (!FirstActive)
 			{
 				pos = temp;
-				found = true;
+				FirstActive = true;
 			}
 			else
 			{
-				if (temp.x < pos.x)
+				if (m == 'l')
 				{
-					pos = temp;
+					if (temp.x < pos.x)
+					{
+						pos = temp;
+					}
+					else
+					{
+						pos = pos;
+					}
 				}
-				else
+				if (m == 'r')
 				{
-					pos = pos;
+					if (temp.x > pos.x)
+					{
+						pos = temp;
+					}
+					else
+					{
+						pos = pos;
+					}
 				}
 			}
 		}
@@ -117,12 +164,10 @@ Vei2 Blocks::MostLeftBlockTest()
 		});
 
 	auto n = std::min_element(test.begin(), test.end(),
-	[] (BlockSeg& l, BlockSeg& r)
-	{
-		
-		return l.GetPos().x < r.GetPos().x;
-
-	});
+		[] (BlockSeg& l, BlockSeg& r)
+		{
+			return l.GetPos().x < r.GetPos().x;
+		});
 
 	return n->GetPos();
 }

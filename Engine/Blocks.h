@@ -7,6 +7,7 @@
 #include "Keyboard.h"
 #include <algorithm>
 #include <iterator>
+#include <functional>
 
 class Blocks
 {
@@ -27,7 +28,6 @@ private:
 		bool Empty = true;
 	private:
 		Vei2 pos;
-		
 		Color BColor;
 	};
 
@@ -36,8 +36,9 @@ public:
 	void Draw(Board& brd) const;
 	void MoveBy(Vei2& delta_loc);
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
+	void Rotate(BlockType type);
 private:
-	Vei2 MostLeftBlock() const;
+	Vei2 MostSideBlock(const char m) const;
 	Vei2 MostLeftBlockTest();
 private:
 	std::vector<BlockSeg> MovingBlocks;
