@@ -2,7 +2,8 @@
 
 Blocks::Blocks(const BlockType& type, Color c)
 	:
-	StartPos({9, 3})
+	StartPos({9, 3}),
+	type(type)
 {
 	MovingBlocks.reserve(total);		
 	Vei2 loc = StartPos;
@@ -12,25 +13,27 @@ Blocks::Blocks(const BlockType& type, Color c)
 		for (int x = 0; x < viisto; x++)
 		{
 			loc.x += 1;
-			if (loc.x >= StartPos.x + 3)
+			MovingBlocks.emplace_back(loc, c);
+			if (loc.x >= StartPos.x + 4)
 			{
 				loc.x = StartPos.x;
 			}
 			int i = y * viisto + x;
-			MovingBlocks.emplace_back(loc, c);
-
+			
 			if (type == BlockType::I)
 			{
 				if (x == 1)
 				{
 					MovingBlocks[i].Empty = false;
 				}
-				else
+			}
+			if (type == BlockType::L)
+			{
+				if (x == 1 || i == 0)
 				{
-					MovingBlocks[i].Empty = true;
+					MovingBlocks[i].Empty = false;
 				}
 			}
-
 
 
 		}
@@ -70,7 +73,7 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	else if (kbd.KeyIsPressed(VK_UP))
 	{
-		Rotate(BlockType::I);
+		Rotate();
 	}
 	else
 	{
@@ -78,29 +81,17 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 }
 
-void Blocks::Rotate(BlockType type)
+void Blocks::Rotate()
 {
-	for (int y = 0; y < pysty; y++)
+	switch (type)
 	{
-		for (int x = 0; x < viisto; x++)
-		{
-			int i = y * viisto + x;
-			if (type == BlockType::I)
-			{
-				if (MovingBlocks[x == 1].Empty)
-				{
-					MovingBlocks[x == 1].Empty = false;
-				}
-				else if (MovingBlocks[y == 1].Empty)
-				{
-					MovingBlocks[y == 1].Empty = false;
-				}
-			}
-
-
-
-		}
+	case BlockType::I:
+		std::swap(MovingBlocks[1].Empty, MovingBlocks[5].Empty);
+		std::swap(MovingBlocks[7].Empty, MovingBlocks[3].Empty);
+		break; 
 	}
+
+
 }
 
 

@@ -15,7 +15,10 @@ public:
 	enum class BlockType
 	{
 		I,
-		L
+		N,
+		L,
+		
+
 	};
 private:
 	class BlockSeg
@@ -36,15 +39,15 @@ public:
 	void Draw(Board& brd) const;
 	void MoveBy(Vei2& delta_loc);
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
-	void Rotate(BlockType type);
+	void Rotate();
 private:
 	Vei2 MostSideBlock(const char m) const;
 	Vei2 MostLeftBlockTest();
 private:
 	std::vector<BlockSeg> MovingBlocks;
-	
+	BlockType type;
 	Vei2 StartPos;
-	static constexpr int viisto = 3;		//vecktorin koko
-	static constexpr int pysty = 3;
+	static constexpr int viisto = 4;		//vecktorin koko
+	static constexpr int pysty = 4;
 	static constexpr int total = viisto * pysty;
 };
