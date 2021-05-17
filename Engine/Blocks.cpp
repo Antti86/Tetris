@@ -29,7 +29,7 @@ Blocks::Blocks(const BlockType& type, Color c)
 			}
 			if (type == BlockType::L)
 			{
-				if (x == 1 || i == 0)
+				if ((x == 1 && y != 3) || i == 0)
 				{
 					MovingBlocks[i].Empty = false;
 				}
@@ -73,6 +73,12 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	else if (kbd.KeyIsPressed(VK_UP))
 	{
+		
+		RotationCount += 1;
+		if (RotationCount >= 4)
+		{
+			RotationCount = 0;
+		}
 		Rotate();
 	}
 	else
@@ -86,9 +92,36 @@ void Blocks::Rotate()
 	switch (type)
 	{
 	case BlockType::I:
-		std::swap(MovingBlocks[1].Empty, MovingBlocks[5].Empty);
-		std::swap(MovingBlocks[7].Empty, MovingBlocks[3].Empty);
-		break; 
+		std::swap(MovingBlocks[1].Empty, MovingBlocks[4].Empty);
+		std::swap(MovingBlocks[9].Empty, MovingBlocks[6].Empty);
+		std::swap(MovingBlocks[13].Empty, MovingBlocks[7].Empty);
+		break;
+	case BlockType::L:
+		std::swap(MovingBlocks[1].Empty, MovingBlocks[4].Empty);
+		std::swap(MovingBlocks[9].Empty, MovingBlocks[6].Empty);
+		
+		switch (RotationCount)
+		{
+		case 0:
+			std::swap(MovingBlocks[8].Empty, MovingBlocks[0].Empty);
+			break;
+		case 1:
+			std::swap(MovingBlocks[0].Empty, MovingBlocks[2].Empty);
+			break;
+		case 2:
+			std::swap(MovingBlocks[2].Empty, MovingBlocks[10].Empty);
+			break;
+		case 3:
+			std::swap(MovingBlocks[10].Empty, MovingBlocks[0].Empty);
+			break;
+		}
+		break;
+
+
+	
+
+	
+
 	}
 
 
@@ -143,6 +176,26 @@ Vei2 Blocks::MostSideBlock(const char m) const
 		
 	}
 	return pos;
+}
+
+Blocks::RotationPos Blocks::GetRotPos()
+{
+	switch (RotationCount)
+	{
+	case 0:
+		clock = RotationPos::Twelve;
+		break;
+	case 1:
+		clock = RotationPos::Three;
+		break;
+	case 2:
+		clock = RotationPos::Six;
+		break;
+	case 3:
+		clock = RotationPos::Nine;
+		break;
+	}
+	return clock;
 }
 
 Vei2 Blocks::MostLeftBlockTest()
