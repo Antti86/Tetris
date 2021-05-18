@@ -14,7 +14,7 @@ Blocks::Blocks(const BlockType& type, Color c)
 		{
 			loc.x += 1;
 			MovingBlocks.emplace_back(loc, c);
-			if (loc.x >= StartPos.x + 4)
+			if (loc.x >= StartPos.x + viisto)
 			{
 				loc.x = StartPos.x;
 			}
@@ -75,11 +75,11 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	{
 		
 		RotationCount += 1;
-		if (RotationCount >= 4)
+		if (RotationCount >= 1)
 		{
 			RotationCount = 0;
 		}
-		Rotate();
+		RotationTest();
 	}
 	else
 	{
@@ -122,9 +122,36 @@ void Blocks::Rotate()
 
 	
 
+	} 
+	// 0  1  2  3
+	// 4  5  6  7
+	// 8  9  10 11
+	// 12 13 14 15
+
+	// 12   8   4   0
+	// 13   9   5   1
+	// 14  10   6   2
+	// 15  11   7   3
+
+}
+
+void Blocks::RotationTest()
+{
+	switch (RotationCount)
+	{
+	case 0:
+
+		break;
+	case 1:
+		std::swap(MovingBlocks[0].Empty, MovingBlocks[2].Empty);
+		break;
+	case 2:
+		std::swap(MovingBlocks[2].Empty, MovingBlocks[10].Empty);
+		break;
+	case 3:
+		std::swap(MovingBlocks[10].Empty, MovingBlocks[0].Empty);
+		break;
 	}
-
-
 }
 
 

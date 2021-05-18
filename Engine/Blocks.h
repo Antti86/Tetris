@@ -33,6 +33,7 @@ private:
 private:
 	class BlockSeg
 	{
+		friend class Blocks;
 	public:
 		BlockSeg(Vei2& in_pos, Color c);
 		void Draw(Board& brd) const;
@@ -50,6 +51,7 @@ public:
 	void MoveBy(Vei2& delta_loc);
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 	void Rotate();
+	void RotationTest();
 private:
 	Vei2 MostSideBlock(const char m) const;
 	RotationPos GetRotPos();
