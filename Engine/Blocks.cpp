@@ -1,6 +1,6 @@
 #include "Blocks.h"
 
-Blocks::Blocks(const BlockType& type, Color c)
+/*Blocks::Blocks(const BlockType& type, Color c)
 	:
 	StartPos({9, 3}),
 	type(type)
@@ -39,6 +39,45 @@ Blocks::Blocks(const BlockType& type, Color c)
 		}
 	}
 
+}*/
+
+Blocks::Blocks(const BlockType& type, Color c)
+	:
+	StartPos({9, 3}),
+	type(type)
+{
+	MovingBlocks.reserve(testtotal);
+	Vei2 loc = StartPos;
+	for (int i = 0; i < top; i++)
+	{
+		loc.x += 1;
+		MovingBlocks.emplace_back(loc, c);
+	}
+	for (int t = 0; t < right; t++)
+	{
+		loc.y += 1;
+		MovingBlocks.emplace_back(loc, c);
+	}
+	for (int k = 0; k < bottom; k++)
+	{
+		loc.x -= 1;
+		MovingBlocks.emplace_back(loc, c);
+	}
+	loc.y -= 1;
+	for (int j = 0; j < leftandmidlle; j++)
+	{
+
+		MovingBlocks.emplace_back(loc, c);
+		loc.x += 1;
+	}
+	for (int i = 0; i < testtotal; i++)
+	{
+		if (type == BlockType::L && i == 0 || i == 1 || i == 5 || i == 8)
+		{
+			MovingBlocks[i].Empty = false;
+		}
+	}
+
 }
 
 void Blocks::Draw(Board& brd) const
@@ -73,13 +112,15 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	else if (kbd.KeyIsPressed(VK_UP))
 	{
+
+		std::rotate(MovingBlocks.begin(), MovingBlocks.begin() + 2, MovingBlocks.end() - 1);
 		
-		RotationCount += 1;
+		/*RotationCount += 1;
 		if (RotationCount >= 1)
 		{
 			RotationCount = 0;
 		}
-		RotationTest();
+		RotationTest();*/
 	}
 	else
 	{
@@ -140,7 +181,7 @@ void Blocks::RotationTest()
 	switch (RotationCount)
 	{
 	case 0:
-
+		std::rotate(MovingBlocks.begin(), MovingBlocks.end() - 1, MovingBlocks.begin() + 2);
 		break;
 	case 1:
 		std::swap(MovingBlocks[0].Empty, MovingBlocks[2].Empty);
