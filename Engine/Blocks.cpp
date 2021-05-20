@@ -112,8 +112,16 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	else if (kbd.KeyIsPressed(VK_UP))
 	{
+		std::vector<BlockSeg> testi;
+		std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 2, MovingBlocks.end() - 1, std::back_inserter(testi));
 
-		std::rotate(MovingBlocks.begin(), MovingBlocks.begin() + 2, MovingBlocks.end() - 1);
+		for (int i = 0; i < testi.size(); i++)
+		{
+			MovingBlocks[i].pos = testi[i].pos;
+		}
+		/*std::transform(testi.begin(), testi.end(), MovingBlocks.begin(),
+			[&](BlockSeg& b) {return b.pos; }
+		);*/
 		
 		/*RotationCount += 1;
 		if (RotationCount >= 1)

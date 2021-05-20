@@ -40,8 +40,9 @@ private:
 		void Moveby(Vei2& delta_loc);
 		Vei2 GetPos() const;
 		bool Empty = true;
-	private:
 		Vei2 pos;
+	private:
+		
 		Color BColor;
 	};
 
