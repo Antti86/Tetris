@@ -22,14 +22,7 @@ public:
 		MirrorN,
 		MirrorL
 	};
-private:
-	enum class RotationPos
-	{
-		Twelve,
-		Three,
-		Six,
-		Nine
-	};
+
 private:
 	class BlockSeg
 	{
@@ -39,10 +32,10 @@ private:
 		void Draw(Board& brd) const;
 		void Moveby(Vei2& delta_loc);
 		Vei2 GetPos() const;
+
+	private:
 		bool Empty = true;
 		Vei2 pos;
-	private:
-		
 		Color BColor;
 	};
 
@@ -53,17 +46,14 @@ public:
 	void MoveBy(Vei2& delta_loc);
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 	void Rotate();
-	void RotationTest();
 private:
 	Vei2 MostSideBlock(const char m) const;
-	RotationPos GetRotPos();
 	Vei2 MostLeftBlockTest();
 private:
 	std::vector<BlockSeg> MovingBlocks;
 	BlockType type;
 	Vei2 StartPos;
-	RotationPos clock = RotationPos::Twelve;
-	int RotationCount = 0;
+	
 	static constexpr int viisto = 4;		//vecktorin koko
 	static constexpr int pysty = 4;
 	static constexpr int total = viisto * pysty;

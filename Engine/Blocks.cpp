@@ -66,7 +66,6 @@ Blocks::Blocks(const BlockType& type, Color c)
 	loc.y -= 1;
 	for (int j = 0; j < leftandmidlle; j++)
 	{
-
 		MovingBlocks.emplace_back(loc, c);
 		loc.x += 1;
 	}
@@ -114,21 +113,20 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	{
 		std::vector<BlockSeg> testi;
 		std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 2, MovingBlocks.end() - 1, std::back_inserter(testi));
-
 		for (int i = 0; i < testi.size(); i++)
 		{
 			MovingBlocks[i].pos = testi[i].pos;
 		}
-		/*std::transform(testi.begin(), testi.end(), MovingBlocks.begin(),
-			[&](BlockSeg& b) {return b.pos; }
+
+		/*std::transform(testi.begin(), testi.end(), MovingBlocks.begin(), MovingBlocks.begin(),
+			[](BlockSeg& b, BlockSeg& r)
+			{
+				b.pos = b.pos;
+				b.Empty = r.Empty;
+				return b;
+			}
 		);*/
 		
-		/*RotationCount += 1;
-		if (RotationCount >= 1)
-		{
-			RotationCount = 0;
-		}
-		RotationTest();*/
 	}
 	else
 	{
@@ -145,26 +143,7 @@ void Blocks::Rotate()
 		std::swap(MovingBlocks[9].Empty, MovingBlocks[6].Empty);
 		std::swap(MovingBlocks[13].Empty, MovingBlocks[7].Empty);
 		break;
-	case BlockType::L:
-		std::swap(MovingBlocks[1].Empty, MovingBlocks[4].Empty);
-		std::swap(MovingBlocks[9].Empty, MovingBlocks[6].Empty);
-		
-		switch (RotationCount)
-		{
-		case 0:
-			std::swap(MovingBlocks[8].Empty, MovingBlocks[0].Empty);
-			break;
-		case 1:
-			std::swap(MovingBlocks[0].Empty, MovingBlocks[2].Empty);
-			break;
-		case 2:
-			std::swap(MovingBlocks[2].Empty, MovingBlocks[10].Empty);
-			break;
-		case 3:
-			std::swap(MovingBlocks[10].Empty, MovingBlocks[0].Empty);
-			break;
-		}
-		break;
+
 
 
 	
@@ -172,36 +151,9 @@ void Blocks::Rotate()
 	
 
 	} 
-	// 0  1  2  3
-	// 4  5  6  7
-	// 8  9  10 11
-	// 12 13 14 15
-
-	// 12   8   4   0
-	// 13   9   5   1
-	// 14  10   6   2
-	// 15  11   7   3
 
 }
 
-void Blocks::RotationTest()
-{
-	switch (RotationCount)
-	{
-	case 0:
-		std::rotate(MovingBlocks.begin(), MovingBlocks.end() - 1, MovingBlocks.begin() + 2);
-		break;
-	case 1:
-		std::swap(MovingBlocks[0].Empty, MovingBlocks[2].Empty);
-		break;
-	case 2:
-		std::swap(MovingBlocks[2].Empty, MovingBlocks[10].Empty);
-		break;
-	case 3:
-		std::swap(MovingBlocks[10].Empty, MovingBlocks[0].Empty);
-		break;
-	}
-}
 
 
 Vei2 Blocks::MostSideBlock(const char m) const
@@ -254,25 +206,6 @@ Vei2 Blocks::MostSideBlock(const char m) const
 	return pos;
 }
 
-Blocks::RotationPos Blocks::GetRotPos()
-{
-	switch (RotationCount)
-	{
-	case 0:
-		clock = RotationPos::Twelve;
-		break;
-	case 1:
-		clock = RotationPos::Three;
-		break;
-	case 2:
-		clock = RotationPos::Six;
-		break;
-	case 3:
-		clock = RotationPos::Nine;
-		break;
-	}
-	return clock;
-}
 
 Vei2 Blocks::MostLeftBlockTest()
 {
