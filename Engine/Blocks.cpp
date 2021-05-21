@@ -46,36 +46,84 @@ Blocks::Blocks(const BlockType& type, Color c)
 	StartPos({9, 3}),
 	type(type)
 {
-	MovingBlocks.reserve(testtotal);
+	
 	Vei2 loc = StartPos;
-	for (int i = 0; i < top; i++)
+
+	if (type == BlockType::I)		//2D Grid
 	{
-		loc.x += 1;
-		MovingBlocks.emplace_back(loc, c);
-	}
-	for (int t = 0; t < right; t++)
-	{
-		loc.y += 1;
-		MovingBlocks.emplace_back(loc, c);
-	}
-	for (int k = 0; k < bottom; k++)
-	{
-		loc.x -= 1;
-		MovingBlocks.emplace_back(loc, c);
-	}
-	loc.y -= 1;
-	for (int j = 0; j < leftandmidlle; j++)
-	{
-		MovingBlocks.emplace_back(loc, c);
-		loc.x += 1;
-	}
-	for (int i = 0; i < testtotal; i++)
-	{
-		if (type == BlockType::L && i == 0 || i == 1 || i == 5 || i == 8)
+		MovingBlocks.reserve(total);
+		for (int y = 0; y < Collums; y++)
 		{
-			MovingBlocks[i].Empty = false;
+			loc.y += 1;
+			for (int x = 0; x < Rows; x++)
+			{
+				loc.x += 1;
+				MovingBlocks.emplace_back(loc, c);
+				if (loc.x >= StartPos.x + Rows)
+				{
+					loc.x = StartPos.x;
+				}
+				int i = y * Rows + x;
+				if (x == 1)
+				{
+					MovingBlocks[i].Empty = false;
+				}
+			}
 		}
 	}
+	else
+	{
+		MovingBlocks.reserve(Linerialtotal);			//Linerial Grid for easier rotation
+		for (int i = 0; i < top; i++)					// 0  1  2
+		{												// 7  8  3
+			loc.x += 1;									// 6  5  4
+			MovingBlocks.emplace_back(loc, c);
+		}
+		for (int t = 0; t < right; t++)
+		{
+			loc.y += 1;
+			MovingBlocks.emplace_back(loc, c);
+		}
+		for (int k = 0; k < bottom; k++)
+		{
+			loc.x -= 1;
+			MovingBlocks.emplace_back(loc, c);
+		}
+		loc.y -= 1;
+		for (int j = 0; j < leftandmidlle; j++)
+		{
+			MovingBlocks.emplace_back(loc, c);
+			loc.x += 1;
+		}
+		for (int i = 0; i < Linerialtotal; i++)
+		{
+			if (type == BlockType::L && (i == 0 || i == 1 || i == 5 || i == 8))
+			{
+				MovingBlocks[i].Empty = false;
+			}
+			if (type == BlockType::Brick && (i == 0 || i == 1 || i == 7 || i == 8))
+			{
+				MovingBlocks[i].Empty = false;
+			}
+			if (type == BlockType::HalfCross && (i == 1 || i == 5 || i == 7 || i == 8))
+			{
+				MovingBlocks[i].Empty = false;
+			}
+			if (type == BlockType::N && (i == 2 || i == 3 || i == 5 || i == 8))
+			{
+				MovingBlocks[i].Empty = false;
+			}
+			if (type == BlockType::MirrorN && (i == 0 || i == 5 || i == 7 || i == 8))
+			{
+				MovingBlocks[i].Empty = false;
+			}
+			if (type == BlockType::MirrorL && (i == 1 || i == 2 || i == 5 || i == 8))
+			{
+				MovingBlocks[i].Empty = false;
+			}
+		}
+	}
+
 
 }
 
@@ -100,58 +148,67 @@ void Blocks::MoveBy(Vei2& delta_loc)
 
 void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 {
-
+	const Keyboard::Event e = kbd.ReadKey();
 	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}))
 	{
-		delta_loc = {-1, 0};
+		delta_loc = { -1, 1 };
+		if (e.IsPress() && e.GetCode() == VK_UP)
+		{
+			Rotate();
+		}
 	}
 	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}))
 	{
-		delta_loc = { 1, 0 };
-	}
-	else if (kbd.KeyIsPressed(VK_UP))
-	{
-		std::vector<BlockSeg> testi;
-		std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 2, MovingBlocks.end() - 1, std::back_inserter(testi));
-		for (int i = 0; i < testi.size(); i++)
+		delta_loc = { 1, 1 };
+		if (e.IsPress() && e.GetCode() == VK_UP)
 		{
-			MovingBlocks[i].pos = testi[i].pos;
+			Rotate();
 		}
-
-		/*std::transform(testi.begin(), testi.end(), MovingBlocks.begin(), MovingBlocks.begin(),
-			[](BlockSeg& b, BlockSeg& r)
-			{
-				b.pos = b.pos;
-				b.Empty = r.Empty;
-				return b;
-			}
-		);*/
-		
+	}
+	else if (e.IsPress() && e.GetCode() == VK_UP)
+	{
+		Rotate();
 	}
 	else
 	{
 		delta_loc = { 0, 0 };
 	}
+	PositionFix(brd);
+}
+
+void Blocks::PositionFix(const Board& brd)
+{
+	if (!brd.IsInsideBoard(MostSideBlock('r')))
+	{
+		MoveBy(Vei2(-1, 0));
+	}
+	if (!brd.IsInsideBoard(MostSideBlock('l')))
+	{
+		MoveBy(Vei2(1, 0));
+	}
 }
 
 void Blocks::Rotate()
 {
-	switch (type)
+	if (type == BlockType::I)
 	{
-	case BlockType::I:
 		std::swap(MovingBlocks[1].Empty, MovingBlocks[4].Empty);
 		std::swap(MovingBlocks[9].Empty, MovingBlocks[6].Empty);
 		std::swap(MovingBlocks[13].Empty, MovingBlocks[7].Empty);
-		break;
+	}
+	else if (type == BlockType::Brick)
+	{
 
-
-
-	
-
-	
-
-	} 
-
+	}
+	else
+	{
+		std::vector<BlockSeg> temp;
+		std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 2, MovingBlocks.end() - 1, std::back_inserter(temp));
+		for (int i = 0; i < temp.size(); i++)
+		{
+			MovingBlocks[i].pos = temp[i].pos;
+		}
+	}
 }
 
 

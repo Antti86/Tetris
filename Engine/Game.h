@@ -49,7 +49,7 @@ private:
 	
 	Board brd;
 	Vei2 delta_loc = { 0, 1 };
-	Blocks test = { Blocks::BlockType::L, Colors::Blue };
-	float BlockMoveRate = 20.0f;
+	Blocks test = { Blocks::BlockType::I, Colors::Blue };
+	float BlockMoveRate = 30.0f;
 	float BlockMoveCounter = 0;
 };
