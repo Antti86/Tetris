@@ -41,9 +41,10 @@ private:
 public:
 	Blocks(const BlockType& type, Color c);
 	void Draw(Board& brd) const;
-	void MoveBy(Vei2& delta_loc);
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 private:
+	void MoveBy(Vei2& delta_loc);
+	void MovementSpeed(Vei2& delta_loc);
 	void PositionFix(const Board& brd);
 	void Rotate();
 	Vei2 MostSideBlock(const char m) const;
@@ -52,6 +53,12 @@ private:
 	std::vector<BlockSeg> MovingBlocks;
 	BlockType type;
 	Vei2 StartPos;
+
+	float BlockMoveRateDown = 30.0f;
+	float BlockMoveCounterDown = 0;
+
+	float BlockMoveRateSide = 30.0f;
+	float BlockMoveCounterSide = 0;
 
 	//vecktor size
 	static constexpr int Rows = 4;		//Block I

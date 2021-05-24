@@ -48,8 +48,6 @@ private:
 	/********************************/
 	
 	Board brd;
-	Vei2 delta_loc = { 0, 1 };
+	Vei2 delta_loc = { 0, 0 };
 	Blocks test = { Blocks::BlockType::I, Colors::Blue };
-	float BlockMoveRate = 30.0f;
-	float BlockMoveCounter = 0;
 };

@@ -1,46 +1,5 @@
 #include "Blocks.h"
 
-/*Blocks::Blocks(const BlockType& type, Color c)
-	:
-	StartPos({9, 3}),
-	type(type)
-{
-	MovingBlocks.reserve(total);		
-	Vei2 loc = StartPos;
-	for (int y = 0; y < pysty; y++)
-	{
-		loc.y += 1;
-		for (int x = 0; x < viisto; x++)
-		{
-			loc.x += 1;
-			MovingBlocks.emplace_back(loc, c);
-			if (loc.x >= StartPos.x + viisto)
-			{
-				loc.x = StartPos.x;
-			}
-			int i = y * viisto + x;
-			
-			if (type == BlockType::I)
-			{
-				if (x == 1)
-				{
-					MovingBlocks[i].Empty = false;
-				}
-			}
-			if (type == BlockType::L)
-			{
-				if ((x == 1 && y != 3) || i == 0)
-				{
-					MovingBlocks[i].Empty = false;
-				}
-			}
-
-
-		}
-	}
-
-}*/
-
 Blocks::Blocks(const BlockType& type, Color c)
 	:
 	StartPos({9, 3}),
@@ -148,10 +107,11 @@ void Blocks::MoveBy(Vei2& delta_loc)
 
 void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 {
+	delta_loc = { 0, 1 };
 	const Keyboard::Event e = kbd.ReadKey();
 	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}))
 	{
-		delta_loc = { -1, 1 };
+		delta_loc = { -1, 0 };
 		if (e.IsPress() && e.GetCode() == VK_UP)
 		{
 			Rotate();
@@ -159,21 +119,40 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}))
 	{
-		delta_loc = { 1, 1 };
+		delta_loc = { 1, 0 };
 		if (e.IsPress() && e.GetCode() == VK_UP)
 		{
 			Rotate();
 		}
 	}
+	else if (kbd.KeyIsPressed(VK_DOWN))
+	{
+		BlockMoveCounterDown += 10.0f;
+	}
 	else if (e.IsPress() && e.GetCode() == VK_UP)
 	{
 		Rotate();
 	}
-	else
-	{
-		delta_loc = { 0, 0 };
-	}
 	PositionFix(brd);
+	MovementSpeed(delta_loc);
+
+}
+
+
+void Blocks::MovementSpeed(Vei2& delta_loc)
+{
+	BlockMoveCounterSide += 2.0f;
+	BlockMoveCounterDown += 1.0f;
+	if (BlockMoveCounterDown >= BlockMoveRateDown)
+	{
+		MoveBy(Vei2(0, 1));
+		BlockMoveCounterDown = 0;
+	}
+	if (BlockMoveCounterSide >= BlockMoveRateSide && (delta_loc == Vei2{ -1, 0 } || delta_loc == Vei2{ 1, 0 }))
+	{
+		MoveBy(delta_loc);
+		BlockMoveCounterSide = 0;
+	}
 }
 
 void Blocks::PositionFix(const Board& brd)
@@ -248,6 +227,17 @@ Vei2 Blocks::MostSideBlock(const char m) const
 				if (m == 'r')
 				{
 					if (temp.x > pos.x)
+					{
+						pos = temp;
+					}
+					else
+					{
+						pos = pos;
+					}
+				}
+				if (m == 'd')
+				{
+					if (temp.y > pos.y)
 					{
 						pos = temp;
 					}

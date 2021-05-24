@@ -20,7 +20,7 @@ public:
 	Board(Graphics& gfx);
 	void DrawCell(const Vei2& pos, Color c) const;
 	void DrawBlock();
-	void DrawBorder() const;
+	void DrawBorder() const;	//vaatii alarajan
 	int GetGridWidth() const;
 	int GetGridHeight() const;
 	int GetCellDimension() const;
