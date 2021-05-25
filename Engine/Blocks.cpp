@@ -1,11 +1,11 @@
 #include "Blocks.h"
 
-Blocks::Blocks(const BlockType& type, Color c)
+Blocks::Blocks(Vei2& StartPos, Color c)
 	:
-	StartPos({9, 3}),
-	type(type)
+	StartPos( StartPos ),
+	rng(std::random_device() () )
 {
-	
+	RandomType(rng);
 	Vei2 loc = StartPos;
 
 	if (type == BlockType::I)		//2D Grid
@@ -112,24 +112,16 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}))
 	{
 		delta_loc = { -1, 0 };
-		if (e.IsPress() && e.GetCode() == VK_UP)
-		{
-			Rotate();
-		}
 	}
 	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}))
 	{
 		delta_loc = { 1, 0 };
-		if (e.IsPress() && e.GetCode() == VK_UP)
-		{
-			Rotate();
-		}
 	}
 	else if (kbd.KeyIsPressed(VK_DOWN))
 	{
 		BlockMoveCounterDown += 10.0f;
 	}
-	else if (e.IsPress() && e.GetCode() == VK_UP)
+	if (e.IsPress() && e.GetCode() == VK_UP)
 	{
 		Rotate();
 	}
@@ -189,6 +181,41 @@ void Blocks::Rotate()
 		}
 	}
 }
+
+Blocks::BlockType Blocks::RandomType(std::mt19937& rng)
+{
+	std::uniform_int_distribution<int> randtype(0, 6);
+	if (randtype(rng) == 0)
+	{
+		type = BlockType::I;
+	}
+	else if (randtype(rng) == 1)
+	{
+		type = BlockType::N;
+	}
+	else if (randtype(rng) == 2)
+	{
+		type = BlockType::L;
+	}
+	else if (randtype(rng) == 3)
+	{
+		type = BlockType::HalfCross;
+	}
+	else if (randtype(rng) == 4)
+	{
+		type = BlockType::Brick;
+	}
+	else if (randtype(rng) == 5)
+	{
+		type = BlockType::MirrorN;
+	}
+	else if (randtype(rng) == 6)
+	{
+		type = BlockType::MirrorL;
+	}
+	return type;
+}
+
 
 
 

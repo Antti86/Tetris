@@ -39,12 +39,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	test.Movement(delta_loc, wnd.kbd, brd);
-
+	MovingBlocks.Movement(delta_loc, wnd.kbd, brd);
+	
 }
 
 void Game::ComposeFrame()
 {
 	brd.DrawBorder();
-	test.Draw(brd);
+	MovingBlocks.Draw(brd);
+	Buffer.Draw(brd);
 }

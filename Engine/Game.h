@@ -26,6 +26,7 @@
 #include "Board.h"
 #include "Vec2.h"
 #include "Blocks.h"
+#include <random>
 
 class Game
 {
@@ -47,7 +48,10 @@ private:
 	/*  User Variables              */
 	/********************************/
 	
+
 	Board brd;
 	Vei2 delta_loc = { 0, 0 };
-	Blocks test = { Blocks::BlockType::I, Colors::Blue };
+	Blocks MovingBlocks = {Vei2(9, 3), Colors::Blue };
+
+	Blocks Buffer = {Vei2(24, 4), Colors::Green };
 };

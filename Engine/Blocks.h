@@ -39,21 +39,24 @@ private:
 	};
 
 public:
-	Blocks(const BlockType& type, Color c);
+	Blocks(Vei2& StartPos, Color c);
 	void Draw(Board& brd) const;
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
+	bool BlocksStops = false;
 private:
 	void MoveBy(Vei2& delta_loc);
 	void MovementSpeed(Vei2& delta_loc);
 	void PositionFix(const Board& brd);
 	void Rotate();
+	BlockType RandomType(std::mt19937& rng);
+	BlockType RandomTypeTest(std::mt19937& rng);
 	Vei2 MostSideBlock(const char m) const;
 	Vei2 MostLeftBlockTest();
 private:
 	std::vector<BlockSeg> MovingBlocks;
 	BlockType type;
 	Vei2 StartPos;
-
+	std::mt19937 rng;
 	float BlockMoveRateDown = 30.0f;
 	float BlockMoveCounterDown = 0;
 
