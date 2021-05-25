@@ -51,7 +51,7 @@ private:
 
 	Board brd;
 	Vei2 delta_loc = { 0, 0 };
-	Blocks MovingBlocks = {Vei2(9, 3), Colors::Blue };
+	Blocks ActiveBlocks = {Vei2(9, 3)};
 
-	Blocks Buffer = {Vei2(24, 4), Colors::Green };
+	Blocks Buffer = {Vei2(24, 4) };
 };

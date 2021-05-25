@@ -39,13 +39,24 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	MovingBlocks.Movement(delta_loc, wnd.kbd, brd);
+	bool col = ActiveBlocks.CollisionDown(brd);
+	if (col)
+	{
+		ActiveBlocks = Buffer;
+		ActiveBlocks.StartPos = Vei2(9, 3);
+		//Buffer = Blocks(Vei2(24, 4));
+		col = false;
+	}
+	else
+	{
+		ActiveBlocks.Movement(delta_loc, wnd.kbd, brd);
+	}
 	
 }
 
 void Game::ComposeFrame()
 {
 	brd.DrawBorder();
-	MovingBlocks.Draw(brd);
+	ActiveBlocks.Draw(brd);
 	Buffer.Draw(brd);
 }

@@ -8,6 +8,7 @@
 
 class Board
 {
+public:
 	enum class CellColor
 	{
 		Empty,

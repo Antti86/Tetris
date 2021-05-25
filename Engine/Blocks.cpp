@@ -1,11 +1,12 @@
 #include "Blocks.h"
 
-Blocks::Blocks(Vei2& StartPos, Color c)
+Blocks::Blocks(Vei2& StartPos)
 	:
 	StartPos( StartPos ),
 	rng(std::random_device() () )
 {
 	RandomType(rng);
+	RandomColor(rng);
 	Vei2 loc = StartPos;
 
 	if (type == BlockType::I)		//2D Grid
@@ -97,6 +98,26 @@ void Blocks::Draw(Board& brd) const
 	}
 }
 
+Vei2 Blocks::GetNextLoc(const Vei2& delta_loc) const
+{
+	Vei2 l(MostSideBlock('d'));
+	l + delta_loc;
+	return l;
+}
+
+bool Blocks::CollisionDown(const Board& brd) const
+{
+	if ( !brd.IsInsideBoard(GetNextLoc(Vei2(0,1))))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	//brd.GetCellColor(GetNextLoc(Vei2(0, 1))) != Board::CellColor::Empty ||
+}
+
 void Blocks::MoveBy(Vei2& delta_loc)
 {
 	for (auto& s : MovingBlocks)
@@ -185,35 +206,59 @@ void Blocks::Rotate()
 Blocks::BlockType Blocks::RandomType(std::mt19937& rng)
 {
 	std::uniform_int_distribution<int> randtype(0, 6);
-	if (randtype(rng) == 0)
+	int random = randtype(rng);
+	if (random == 0)
 	{
 		type = BlockType::I;
 	}
-	else if (randtype(rng) == 1)
+	else if (random == 1)
 	{
 		type = BlockType::N;
 	}
-	else if (randtype(rng) == 2)
+	else if (random == 2)
 	{
 		type = BlockType::L;
 	}
-	else if (randtype(rng) == 3)
+	else if (random == 3)
 	{
 		type = BlockType::HalfCross;
 	}
-	else if (randtype(rng) == 4)
+	else if (random == 4)
 	{
 		type = BlockType::Brick;
 	}
-	else if (randtype(rng) == 5)
+	else if (random == 5)
 	{
 		type = BlockType::MirrorN;
 	}
-	else if (randtype(rng) == 6)
+	else if (random == 6)
 	{
 		type = BlockType::MirrorL;
 	}
 	return type;
+}
+
+Color Blocks::RandomColor(std::mt19937& rng)
+{
+	std::uniform_int_distribution<int> randtype(0, 3);
+	int random = randtype(rng);
+	if (random == 0)
+	{
+		c = Colors::Blue;
+	}
+	else if (random == 1)
+	{
+		c = Colors::Green;
+	}
+	else if (random == 2)
+	{
+		c = Colors::Red;
+	}
+	else if (random == 3)
+	{
+		c = Colors::Yellow;
+	}
+	return c;
 }
 
 
