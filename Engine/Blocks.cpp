@@ -1,6 +1,6 @@
 #include "Blocks.h"
 
-Blocks::Blocks(Vei2& StartPos)
+/*Blocks::Blocks(Vei2& StartPos)
 	:
 	StartPos( StartPos ),
 	rng(std::random_device() () )
@@ -40,22 +40,30 @@ Blocks::Blocks(Vei2& StartPos)
 			loc.x += 1;									// 6  5  4
 			MovingBlocks.emplace_back(loc, c);
 		}
-		for (int t = 0; t < right; t++)					// 0  1  2  3
+		for (int i = 0; i < right; i++)					// 0  1  2  3
 		{												// 11 12 13 4
 			loc.y += 1;									// 10 15 14 5
 			MovingBlocks.emplace_back(loc, c);			// 9  8  7  6
 		}
-		for (int k = 0; k < bottom; k++)
+		for (int i = 0; i < bottom; i++)
 		{
 			loc.x -= 1;
 			MovingBlocks.emplace_back(loc, c);
 		}
-		loc.y -= 1;
-		for (int j = 0; j < leftandmidlle; j++)
+		for (int i = 0; i < left; i++)
 		{
 			MovingBlocks.emplace_back(loc, c);
-			loc.x += 1;
+			loc.y -= 1;
 		}
+		loc.x += 1;
+		MovingBlocks.emplace_back(loc, c);
+		loc.x += 1;
+		MovingBlocks.emplace_back(loc, c);
+		loc.y += 1;
+		MovingBlocks.emplace_back(loc, c);
+		loc.x -= 1;
+		MovingBlocks.emplace_back(loc, c);
+
 		std::copy(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(StartingPos));
 		for (int i = 0; i < Linerialtotal; i++)
 		{
@@ -87,11 +95,85 @@ Blocks::Blocks(Vei2& StartPos)
 	}
 
 
+}*/
+
+Blocks::Blocks(Vei2& StartPos)
+	:
+	StartPos(StartPos),
+	rng(std::random_device() ())
+{
+	RandomType(rng);
+	RandomColor(rng);
+	Vei2 loc = StartPos;
+
+	MovingBlocks.reserve(Linerialtotal);			//Linerial Grid for easier rotation
+	for (int i = 0; i < top; i++)					// 0  1  2
+	{												// 7  8  3
+		loc.x += 1;									// 6  5  4
+		MovingBlocks.emplace_back(loc, c);
+	}
+	for (int i = 0; i < right; i++)					// 0  1  2  3
+	{												// 11 12 13 4
+		loc.y += 1;									// 10 15 14 5
+		MovingBlocks.emplace_back(loc, c);			// 9  8  7  6
+	}
+	for (int i = 0; i < bottom; i++)
+	{
+		loc.x -= 1;
+		MovingBlocks.emplace_back(loc, c);
+	}
+	for (int i = 0; i < left; i++)
+	{
+		MovingBlocks.emplace_back(loc, c);
+		loc.y -= 1;
+	}
+	loc.x += 1;
+	MovingBlocks.emplace_back(loc, c);
+	loc.x += 1;
+	MovingBlocks.emplace_back(loc, c);
+	loc.y += 1;
+	MovingBlocks.emplace_back(loc, c);
+	loc.x -= 1;
+	MovingBlocks.emplace_back(loc, c);
+
+	std::copy(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(StartingPos));
+	for (int i = 0; i < Linerialtotal; i++)
+	{
+		if (type == BlockType::I && (i == 1 || i == 15 || i == 8 || i == 12))						// 0  1  2  3
+		{																							// 11 12 13 4
+			MovingBlocks[i].Empty = false;															// 10 15 14 5
+		}																							// 9  8  7  6
+		if (type == BlockType::L && (i == 0 || i == 1 || i == 15 || i == 12))
+		{
+			MovingBlocks[i].Empty = false;
+		}
+		if (type == BlockType::Brick && (i == 12 || i == 13 || i == 14 || i == 15))
+		{
+			MovingBlocks[i].Empty = false;
+		}
+		if (type == BlockType::HalfCross && (i == 1 || i == 11 || i == 12 || i == 15))
+		{
+			MovingBlocks[i].Empty = false;
+		}
+		if (type == BlockType::N && (i == 2 || i == 12 || i == 15 || i == 13))
+		{
+			MovingBlocks[i].Empty = false;
+		}
+		if (type == BlockType::MirrorN && (i == 1 || i == 12 || i == 14 || i == 13))
+		{
+			MovingBlocks[i].Empty = false;
+		}
+		if (type == BlockType::MirrorL && (i == 3 || i == 2 || i == 13 || i == 14))
+		{
+			MovingBlocks[i].Empty = false;
+		}
+	}
 }
+
 
 Blocks& Blocks::operator=(const Blocks& b)
 {
-	//this->type = b.type;
+	type = b.type;
 	for (int i = 0; i < MovingBlocks.size(); i++)
 	{
 		this->MovingBlocks[i].pos = this->StartingPos[i].pos;
@@ -198,7 +280,17 @@ void Blocks::PositionFix(const Board& brd)
 
 void Blocks::Rotate()
 {
-	if (type == BlockType::I)
+	std::vector<BlockSeg> temp;
+	std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 3, MovingBlocks.end() - 4, std::back_inserter(temp));
+
+	std::rotate_copy(MovingBlocks.begin() + 12, MovingBlocks.begin() + 13, MovingBlocks.end(), std::back_inserter(temp));
+
+	for (int i = 0; i < temp.size(); i++)											// 0  1  2  3
+	{																				// 11 12 13 4
+		MovingBlocks[i].pos = temp[i].pos;											// 10 15 14 5
+	}																				// 9  8  7  6
+
+	/*if (type == BlockType::I)
 	{
 		std::swap(MovingBlocks[1].Empty, MovingBlocks[4].Empty);
 		std::swap(MovingBlocks[9].Empty, MovingBlocks[6].Empty);
@@ -216,7 +308,7 @@ void Blocks::Rotate()
 		{
 			MovingBlocks[i].pos = temp[i].pos;
 		}
-	}
+	}*/
 }
 
 Blocks::BlockType Blocks::RandomType(std::mt19937& rng)

@@ -72,11 +72,11 @@ private:
 	static constexpr int Collums = 4;
 	static constexpr int total = Rows * Collums;
 
-	static constexpr int top = 3;			//Other Blocks
-	static constexpr int right = 2;
-	static constexpr int bottom = 2;
-	static constexpr int leftandmidlle = 2;
-	static constexpr int midlle = 1;
-	static constexpr int Linerialtotal = top + right + bottom + leftandmidlle;
+	static constexpr int top = 4;			//Other Blocks
+	static constexpr int right = 3;
+	static constexpr int bottom = 3;
+	static constexpr int left = 2;
+	static constexpr int midlle = 4;
+	static constexpr int Linerialtotal = top + right + bottom + left + midlle;
 
 };
