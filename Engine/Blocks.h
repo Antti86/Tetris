@@ -40,10 +40,10 @@ private:
 
 public:
 	Blocks(Vei2& StartPos);
+	Blocks& operator =(const Blocks& b);
 	void Draw(Board& brd) const;
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 	bool CollisionDown(const Board& brd) const;
-	Vei2 StartPos;
 private:
 	Vei2 GetNextLoc(const Vei2& delta_loc) const;
 	void MoveBy(Vei2& delta_loc);
@@ -56,8 +56,9 @@ private:
 	Vei2 MostLeftBlockTest();
 private:
 	std::vector<BlockSeg> MovingBlocks;
+	std::vector<BlockSeg> StartingPos;
 	BlockType type;
-	
+	Vei2 StartPos;
 	std::mt19937 rng;
 	Color c;
 	float BlockMoveRateDown = 30.0f;

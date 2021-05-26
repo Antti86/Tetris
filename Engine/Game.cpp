@@ -43,8 +43,7 @@ void Game::UpdateModel()
 	if (col)
 	{
 		ActiveBlocks = Buffer;
-		ActiveBlocks.StartPos = Vei2(9, 3);
-		//Buffer = Blocks(Vei2(24, 4));
+		Buffer = Blocks(Vei2(24, 4));
 		col = false;
 	}
 	else

@@ -30,6 +30,7 @@ Blocks::Blocks(Vei2& StartPos)
 				}
 			}
 		}
+		std::copy(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(StartingPos));
 	}
 	else
 	{
@@ -39,10 +40,10 @@ Blocks::Blocks(Vei2& StartPos)
 			loc.x += 1;									// 6  5  4
 			MovingBlocks.emplace_back(loc, c);
 		}
-		for (int t = 0; t < right; t++)
-		{
-			loc.y += 1;
-			MovingBlocks.emplace_back(loc, c);
+		for (int t = 0; t < right; t++)					// 0  1  2  3
+		{												// 11 12 13 4
+			loc.y += 1;									// 10 15 14 5
+			MovingBlocks.emplace_back(loc, c);			// 9  8  7  6
 		}
 		for (int k = 0; k < bottom; k++)
 		{
@@ -55,6 +56,7 @@ Blocks::Blocks(Vei2& StartPos)
 			MovingBlocks.emplace_back(loc, c);
 			loc.x += 1;
 		}
+		std::copy(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(StartingPos));
 		for (int i = 0; i < Linerialtotal; i++)
 		{
 			if (type == BlockType::L && (i == 0 || i == 1 || i == 5 || i == 8))
@@ -87,6 +89,19 @@ Blocks::Blocks(Vei2& StartPos)
 
 }
 
+Blocks& Blocks::operator=(const Blocks& b)
+{
+	//this->type = b.type;
+	for (int i = 0; i < MovingBlocks.size(); i++)
+	{
+		this->MovingBlocks[i].pos = this->StartingPos[i].pos;
+		this->MovingBlocks[i].BColor = b.MovingBlocks[i].BColor;
+		this->MovingBlocks[i].Empty = b.MovingBlocks[i].Empty;
+		
+	}
+	return *this;
+}
+
 void Blocks::Draw(Board& brd) const
 {
 	for (auto& s : MovingBlocks)
@@ -117,6 +132,7 @@ bool Blocks::CollisionDown(const Board& brd) const
 	}
 	//brd.GetCellColor(GetNextLoc(Vei2(0, 1))) != Board::CellColor::Empty ||
 }
+
 
 void Blocks::MoveBy(Vei2& delta_loc)
 {
