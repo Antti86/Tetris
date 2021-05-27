@@ -124,8 +124,9 @@ Blocks::Blocks(Vei2& StartPos)
 	}
 	for (int i = 0; i < left; i++)
 	{
-		MovingBlocks.emplace_back(loc, c);
 		loc.y -= 1;
+		MovingBlocks.emplace_back(loc, c);
+		
 	}
 	loc.x += 1;
 	MovingBlocks.emplace_back(loc, c);
@@ -179,7 +180,6 @@ Blocks& Blocks::operator=(const Blocks& b)
 		this->MovingBlocks[i].pos = this->StartingPos[i].pos;
 		this->MovingBlocks[i].BColor = b.MovingBlocks[i].BColor;
 		this->MovingBlocks[i].Empty = b.MovingBlocks[i].Empty;
-		
 	}
 	return *this;
 }
@@ -188,23 +188,24 @@ void Blocks::Draw(Board& brd) const
 {
 	for (auto& s : MovingBlocks)
 	{
-		if (!s.Empty)
+		if (!s.Empty && brd.IsInsideBoard(s.pos))
 		{
 			s.Draw(brd);
 		}
 	}
 }
 
-Vei2 Blocks::GetNextLoc(const Vei2& delta_loc) const
+Vei2 Blocks::GetNextLoc(const Vei2& delta_loc, char m) const
 {
-	Vei2 l(MostSideBlock('d'));
+	Vei2 l(MostSideBlock(m));
 	l + delta_loc;
 	return l;
 }
 
 bool Blocks::CollisionDown(const Board& brd) const
 {
-	if ( !brd.IsInsideBoard(GetNextLoc(Vei2(0,1))))
+	Vei2 next = GetNextLoc(Vei2(0, 1), 'd');
+	if ( next.y >= brd.GetGridHeight())
 	{
 		return true;
 	}
@@ -282,9 +283,7 @@ void Blocks::Rotate()
 {
 	std::vector<BlockSeg> temp;
 	std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 3, MovingBlocks.end() - 4, std::back_inserter(temp));
-
 	std::rotate_copy(MovingBlocks.begin() + 12, MovingBlocks.begin() + 13, MovingBlocks.end(), std::back_inserter(temp));
-
 	for (int i = 0; i < temp.size(); i++)											// 0  1  2  3
 	{																				// 11 12 13 4
 		MovingBlocks[i].pos = temp[i].pos;											// 10 15 14 5

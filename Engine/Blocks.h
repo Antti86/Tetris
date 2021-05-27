@@ -45,7 +45,7 @@ public:
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 	bool CollisionDown(const Board& brd) const;
 private:
-	Vei2 GetNextLoc(const Vei2& delta_loc) const;
+	Vei2 GetNextLoc(const Vei2& delta_loc, char m) const;
 	void MoveBy(Vei2& delta_loc);
 	void MovementSpeed(Vei2& delta_loc);
 	void PositionFix(const Board& brd);
