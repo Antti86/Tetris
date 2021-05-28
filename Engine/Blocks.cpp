@@ -195,6 +195,17 @@ void Blocks::Draw(Board& brd) const
 	}
 }
 
+void Blocks::DrawOutsideBoard(Board& brd) const
+{
+	for (auto& s : MovingBlocks)
+	{
+		if (!s.Empty)
+		{
+			s.Draw(brd);
+		}
+	}
+}
+
 Vei2 Blocks::GetNextLoc(const Vei2& delta_loc, char m) const
 {
 	Vei2 l(MostSideBlock(m));
@@ -214,6 +225,15 @@ bool Blocks::CollisionDown(const Board& brd) const
 		return false;
 	}
 	//brd.GetCellColor(GetNextLoc(Vei2(0, 1))) != Board::CellColor::Empty ||
+}
+
+void Blocks::TransferBlocksToBoard(Board& brd)
+{
+
+	if (CollisionDown(brd))
+	{
+
+	}
 }
 
 
@@ -473,4 +493,9 @@ void Blocks::BlockSeg::Moveby(Vei2& delta_loc)
 Vei2 Blocks::BlockSeg::GetPos() const
 {
 	return pos;
+}
+
+Color Blocks::BlockSeg::GetBcolor() const
+{
+	return BColor;
 }

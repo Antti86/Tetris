@@ -57,5 +57,5 @@ void Game::ComposeFrame()
 {
 	brd.DrawBorder();
 	ActiveBlocks.Draw(brd);
-	Buffer.Draw(brd);
+	Buffer.DrawOutsideBoard(brd);
 }

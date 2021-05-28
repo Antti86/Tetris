@@ -53,5 +53,5 @@ private:
 	Vei2 delta_loc = { 0, 0 };
 	Blocks ActiveBlocks = {Vei2(9, 3)};
 
-	Blocks Buffer = {Vei2(24, 4) };
+	Blocks Buffer = {Vei2(23, 4) };
 };

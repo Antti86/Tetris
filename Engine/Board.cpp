@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Blocks.h"
 
 Board::Board(Graphics& gfx)
 	:
@@ -15,27 +16,39 @@ void Board::DrawCell(const Vei2& pos, Color c) const
 		CellDimension - BlockPad * 2, CellDimension - BlockPad * 2, c);
 }
 
-void Board::DrawBlock()
+void Board::DrawBlocks()
 {
 	for (int y = 0; y < Height; y++)
 	{
 		for (int x = 0; x < Width; x++)
 		{
-			switch (GetCellColor({x, y}))
+			switch (GetCellContent({x, y}))
 			{
-			case CellColor::Blue:
+			case CellContent::Empty:
+				break;
+			case CellContent::Blue:
 				DrawCell({ x,y }, Colors::Blue);
 				break;
-			case CellColor::Green:
+			case CellContent::Green:
 				DrawCell({ x,y }, Colors::Green);
 				break;
-			case CellColor::Red:
+			case CellContent::Red:
 				DrawCell({ x,y }, Colors::Red);
 				break;
 			}
 		}
 	}
 }
+
+void Board::GetBlocks(const Blocks& b)
+{
+	if (b.CollisionDown(*this))
+	{
+
+	}
+}
+
+
 
 void Board::DrawBorder() const
 {
@@ -70,9 +83,9 @@ Vei2 Board::GetSloc() const
 	return Sloc;
 }
 
-Board::CellColor Board::GetCellColor(const Vei2& pos) const
+Board::CellContent Board::GetCellContent(const Vei2& pos) const
 {
-	return Content[static_cast<std::vector<Board::CellColor, std::allocator<Board::CellColor>>::size_type>(pos.y) * Width + pos.x];
+	return Content[static_cast<std::vector<Board::CellContent, std::allocator<Board::CellContent>>::size_type>(pos.y) * Width + pos.x];
 }
 
 bool Board::IsInsideBoard(const Vei2& target) const
