@@ -35,18 +35,14 @@ void Board::DrawBlocks()
 			case CellContent::Red:
 				DrawCell({ x,y }, Colors::Red);
 				break;
+			case CellContent::Yellow:
+				DrawCell({ x,y }, Colors::Yellow);
+				break;
 			}
 		}
 	}
 }
 
-void Board::GetBlocks(const Blocks& b)
-{
-	if (b.CollisionDown(*this))
-	{
-
-	}
-}
 
 
 
@@ -54,7 +50,7 @@ void Board::DrawBorder() const
 {
 	const int left = Sloc.x;
 	const int top = 0;
-	const int right = Sloc.x + (BorderWidth + BorderPad) * 2 + Width * CellDimension + CellDimension;
+	const int right = Sloc.x + (BorderWidth + BorderPad) * 2 + Width * CellDimension; //+ CellDimension;
 	const int bottom = gfx.ScreenHeight;
 
 	gfx.DrawRect(left, top, left + BorderWidth, bottom - BorderWidth, BorderColor);
@@ -88,8 +84,27 @@ Board::CellContent Board::GetCellContent(const Vei2& pos) const
 	return Content[static_cast<std::vector<Board::CellContent, std::allocator<Board::CellContent>>::size_type>(pos.y) * Width + pos.x];
 }
 
+Board::CellContent Board::SetCellContent(const Vei2& pos, CellContent ContentType)
+{
+	return Content[static_cast<std::vector<Board::CellContent, std::allocator<Board::CellContent>>::size_type>(pos.y) * Width + pos.x] = ContentType;
+}
+
 bool Board::IsInsideBoard(const Vei2& target) const
 {
-	return target.x >= 0 && target.x <= GetGridWidth() &&
-		target.y >= 0 && target.y <= GetGridHeight();
+	return target.x >= 0 && target.x <= GetGridWidth() - 1 &&
+		target.y >= 0 && target.y <= GetGridHeight() - 1;
+}
+
+void Board::FullLine()
+{
+	for (int i = 1; i < Height; ++i)
+	{
+		std::vector<CellContent>::iterator itB = Content.begin() + i * Width;
+		std::vector<CellContent>::iterator itE = Content.begin() + i * Width + Width;
+		if (std::all_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
+		{
+			std::transform(itB, itE, itB, [&](CellContent& c) { return c = CellContent::Empty; });
+			std::rotate(Content.begin(), itE - Width, itE);
+		}
+	}
 }

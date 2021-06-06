@@ -25,7 +25,9 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	brd(gfx)
+	brd(gfx),
+	Buffer(Vei2(23, 4)),
+	ActiveBlocks(Vei2(brd.GetGridWidth() / 2 - 1, 3))
 {
 }
 
@@ -39,23 +41,27 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	bool col = ActiveBlocks.CollisionDown(brd);
-	if (col)
+
+	
+	if (ActiveBlocks.CollisionDown(brd))
 	{
+		ActiveBlocks.TransferBlocksToBoard(brd);
 		ActiveBlocks = Buffer;
 		Buffer = Blocks(Vei2(24, 4));
-		col = false;
+		brd.FullLine();
 	}
 	else
 	{
 		ActiveBlocks.Movement(delta_loc, wnd.kbd, brd);
 	}
-	
+
+
 }
 
 void Game::ComposeFrame()
 {
 	brd.DrawBorder();
+	brd.DrawBlocks();
 	ActiveBlocks.Draw(brd);
 	Buffer.DrawOutsideBoard(brd);
 }

@@ -33,6 +33,7 @@ private:
 		void Moveby(Vei2& delta_loc);
 		Vei2 GetPos() const;
 		Color GetBcolor() const;
+		bool GetEmpty() const;
 	private:
 		bool Empty = true;
 		Vei2 pos;
@@ -42,41 +43,38 @@ private:
 public:
 	Blocks(Vei2& StartPos);
 	Blocks& operator =(const Blocks& b);
+	//Blocks(const Blocks&) = delete;
 	void Draw(Board& brd) const;
 	void DrawOutsideBoard(Board& brd) const;
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 	bool CollisionDown(const Board& brd) const;
 	void TransferBlocksToBoard(Board& brd);
-	std::vector<BlockSeg> MovingBlocks;
 private:
 	Vei2 GetNextLoc(const Vei2& delta_loc, char m) const;   //ketjuttaa charin kautta toistaseks
 	void MoveBy(Vei2& delta_loc);
 	void MovementSpeed(Vei2& delta_loc);
 	void PositionFix(const Board& brd);
-	void Rotate();
+	void Rotate(const Board& brd);
+	bool TestNextLoc(const Board& brd, const Vei2& side) const;
 	BlockType RandomType(std::mt19937& rng);
 	Color RandomColor(std::mt19937& rng);
 	Vei2 MostSideBlock(const char m) const;
 	Vei2 MostLeftBlockTest();
 private:
-	
+	std::vector<BlockSeg> MovingBlocks;
 	std::vector<BlockSeg> StartingPos;
 	BlockType type;
 	Vei2 StartPos;
 	std::mt19937 rng;
 	Color c;
+	Board::CellContent ContentColor;
 	float BlockMoveRateDown = 30.0f;
 	float BlockMoveCounterDown = 0;
 
 	float BlockMoveRateSide = 30.0f;
 	float BlockMoveCounterSide = 0;
 
-	//vecktor size
-	static constexpr int Rows = 4;		//Block I
-	static constexpr int Collums = 4;
-	static constexpr int total = Rows * Collums;
-
-	static constexpr int top = 4;			//Other Blocks
+	static constexpr int top = 4;			//Block mapping
 	static constexpr int right = 3;
 	static constexpr int bottom = 3;
 	static constexpr int left = 2;

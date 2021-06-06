@@ -1,102 +1,5 @@
 #include "Blocks.h"
 
-/*Blocks::Blocks(Vei2& StartPos)
-	:
-	StartPos( StartPos ),
-	rng(std::random_device() () )
-{
-	RandomType(rng);
-	RandomColor(rng);
-	Vei2 loc = StartPos;
-
-	if (type == BlockType::I)		//2D Grid
-	{
-		MovingBlocks.reserve(total);
-		for (int y = 0; y < Collums; y++)
-		{
-			loc.y += 1;
-			for (int x = 0; x < Rows; x++)
-			{
-				loc.x += 1;
-				MovingBlocks.emplace_back(loc, c);
-				if (loc.x >= StartPos.x + Rows)
-				{
-					loc.x = StartPos.x;
-				}
-				int i = y * Rows + x;
-				if (x == 1)
-				{
-					MovingBlocks[i].Empty = false;
-				}
-			}
-		}
-		std::copy(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(StartingPos));
-	}
-	else
-	{
-		MovingBlocks.reserve(Linerialtotal);			//Linerial Grid for easier rotation
-		for (int i = 0; i < top; i++)					// 0  1  2
-		{												// 7  8  3
-			loc.x += 1;									// 6  5  4
-			MovingBlocks.emplace_back(loc, c);
-		}
-		for (int i = 0; i < right; i++)					// 0  1  2  3
-		{												// 11 12 13 4
-			loc.y += 1;									// 10 15 14 5
-			MovingBlocks.emplace_back(loc, c);			// 9  8  7  6
-		}
-		for (int i = 0; i < bottom; i++)
-		{
-			loc.x -= 1;
-			MovingBlocks.emplace_back(loc, c);
-		}
-		for (int i = 0; i < left; i++)
-		{
-			MovingBlocks.emplace_back(loc, c);
-			loc.y -= 1;
-		}
-		loc.x += 1;
-		MovingBlocks.emplace_back(loc, c);
-		loc.x += 1;
-		MovingBlocks.emplace_back(loc, c);
-		loc.y += 1;
-		MovingBlocks.emplace_back(loc, c);
-		loc.x -= 1;
-		MovingBlocks.emplace_back(loc, c);
-
-		std::copy(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(StartingPos));
-		for (int i = 0; i < Linerialtotal; i++)
-		{
-			if (type == BlockType::L && (i == 0 || i == 1 || i == 5 || i == 8))
-			{
-				MovingBlocks[i].Empty = false;
-			}
-			if (type == BlockType::Brick && (i == 0 || i == 1 || i == 7 || i == 8))
-			{
-				MovingBlocks[i].Empty = false;
-			}
-			if (type == BlockType::HalfCross && (i == 1 || i == 5 || i == 7 || i == 8))
-			{
-				MovingBlocks[i].Empty = false;
-			}
-			if (type == BlockType::N && (i == 2 || i == 3 || i == 5 || i == 8))
-			{
-				MovingBlocks[i].Empty = false;
-			}
-			if (type == BlockType::MirrorN && (i == 0 || i == 5 || i == 7 || i == 8))
-			{
-				MovingBlocks[i].Empty = false;
-			}
-			if (type == BlockType::MirrorL && (i == 1 || i == 2 || i == 5 || i == 8))
-			{
-				MovingBlocks[i].Empty = false;
-			}
-		}
-	}
-
-
-}*/
-
 Blocks::Blocks(Vei2& StartPos)
 	:
 	StartPos(StartPos),
@@ -107,9 +10,9 @@ Blocks::Blocks(Vei2& StartPos)
 	Vei2 loc = StartPos;
 
 	MovingBlocks.reserve(Linerialtotal);			//Linerial Grid for easier rotation
-	for (int i = 0; i < top; i++)					// 0  1  2
-	{												// 7  8  3
-		loc.x += 1;									// 6  5  4
+	for (int i = 0; i < top; i++)					
+	{												
+		loc.x += 1;									
 		MovingBlocks.emplace_back(loc, c);
 	}
 	for (int i = 0; i < right; i++)					// 0  1  2  3
@@ -171,10 +74,10 @@ Blocks::Blocks(Vei2& StartPos)
 	}
 }
 
-
 Blocks& Blocks::operator=(const Blocks& b)
 {
 	type = b.type;
+	ContentColor = b.ContentColor;
 	for (int i = 0; i < MovingBlocks.size(); i++)
 	{
 		this->MovingBlocks[i].pos = this->StartingPos[i].pos;
@@ -209,14 +112,14 @@ void Blocks::DrawOutsideBoard(Board& brd) const
 Vei2 Blocks::GetNextLoc(const Vei2& delta_loc, char m) const
 {
 	Vei2 l(MostSideBlock(m));
-	l + delta_loc;
+	l += delta_loc;
 	return l;
 }
 
 bool Blocks::CollisionDown(const Board& brd) const
 {
 	Vei2 next = GetNextLoc(Vei2(0, 1), 'd');
-	if ( next.y >= brd.GetGridHeight())
+	if ( next.y >= brd.GetGridHeight() || TestNextLoc(brd, Vei2(0, 1)))
 	{
 		return true;
 	}
@@ -224,18 +127,24 @@ bool Blocks::CollisionDown(const Board& brd) const
 	{
 		return false;
 	}
-	//brd.GetCellColor(GetNextLoc(Vei2(0, 1))) != Board::CellColor::Empty ||
 }
 
 void Blocks::TransferBlocksToBoard(Board& brd)
 {
-
-	if (CollisionDown(brd))
+	for (int i = 0; i < MovingBlocks.size(); i++)
 	{
-
+		if (MovingBlocks[i].GetEmpty())
+		{
+			continue;
+		}
+		else
+		{
+			Vei2 pos = MovingBlocks[i].GetPos();
+			brd.SetCellContent(pos, ContentColor);
+		}
 	}
-}
 
+}
 
 void Blocks::MoveBy(Vei2& delta_loc)
 {
@@ -249,11 +158,11 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 {
 	delta_loc = { 0, 1 };
 	const Keyboard::Event e = kbd.ReadKey();
-	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}))
+	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}) && !TestNextLoc(brd, Vei2(-1, 0)))
 	{
 		delta_loc = { -1, 0 };
 	}
-	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}))
+	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}) && !TestNextLoc(brd, Vei2(1, 0)))
 	{
 		delta_loc = { 1, 0 };
 	}
@@ -263,13 +172,12 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	if (e.IsPress() && e.GetCode() == VK_UP)
 	{
-		Rotate();
+		Rotate(brd);
 	}
 	PositionFix(brd);
 	MovementSpeed(delta_loc);
 
 }
-
 
 void Blocks::MovementSpeed(Vei2& delta_loc)
 {
@@ -299,35 +207,38 @@ void Blocks::PositionFix(const Board& brd)
 	}
 }
 
-void Blocks::Rotate()
+void Blocks::Rotate(const Board& brd)
 {
 	std::vector<BlockSeg> temp;
+	temp.reserve(MovingBlocks.size());
 	std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 3, MovingBlocks.end() - 4, std::back_inserter(temp));
 	std::rotate_copy(MovingBlocks.begin() + 12, MovingBlocks.begin() + 13, MovingBlocks.end(), std::back_inserter(temp));
-	for (int i = 0; i < temp.size(); i++)											// 0  1  2  3
-	{																				// 11 12 13 4
-		MovingBlocks[i].pos = temp[i].pos;											// 10 15 14 5
-	}																				// 9  8  7  6
-
-	/*if (type == BlockType::I)
+	if (std::all_of(temp.begin(), temp.end(),
+		[&](BlockSeg& s)
+		{
+			return brd.GetCellContent(s.GetPos()) == Board::CellContent::Empty;
+		}))
 	{
-		std::swap(MovingBlocks[1].Empty, MovingBlocks[4].Empty);
-		std::swap(MovingBlocks[9].Empty, MovingBlocks[6].Empty);
-		std::swap(MovingBlocks[13].Empty, MovingBlocks[7].Empty);
-	}
-	else if (type == BlockType::Brick)
-	{
-
+		for (int i = 0; i < temp.size(); i++)											// 0  1  2  3
+		{																				// 11 12 13 4
+			MovingBlocks[i].pos = temp[i].pos;											// 10 15 14 5
+		}																				// 9  8  7  6
 	}
 	else
 	{
-		std::vector<BlockSeg> temp;
-		std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 2, MovingBlocks.end() - 1, std::back_inserter(temp));
-		for (int i = 0; i < temp.size(); i++)
+
+	}
+
+}
+
+bool Blocks::TestNextLoc(const Board& brd, const Vei2& side) const
+{
+	return std::any_of(MovingBlocks.begin(), MovingBlocks.end(),
+		[&](const BlockSeg& s)
 		{
-			MovingBlocks[i].pos = temp[i].pos;
-		}
-	}*/
+			Vei2 test = s.GetPos() + side;
+			return s.GetEmpty() == false && brd.GetCellContent(test) != Board::CellContent::Empty;
+		});
 }
 
 Blocks::BlockType Blocks::RandomType(std::mt19937& rng)
@@ -372,24 +283,25 @@ Color Blocks::RandomColor(std::mt19937& rng)
 	if (random == 0)
 	{
 		c = Colors::Blue;
+		ContentColor = Board::CellContent::Blue;
 	}
 	else if (random == 1)
 	{
 		c = Colors::Green;
+		ContentColor = Board::CellContent::Green;
 	}
 	else if (random == 2)
 	{
 		c = Colors::Red;
+		ContentColor = Board::CellContent::Red;
 	}
 	else if (random == 3)
 	{
 		c = Colors::Yellow;
+		ContentColor = Board::CellContent::Yellow;
 	}
 	return c;
 }
-
-
-
 
 Vei2 Blocks::MostSideBlock(const char m) const
 {
@@ -452,7 +364,6 @@ Vei2 Blocks::MostSideBlock(const char m) const
 	return pos;
 }
 
-
 Vei2 Blocks::MostLeftBlockTest()
 {
 	std::vector<BlockSeg> test;
@@ -470,8 +381,6 @@ Vei2 Blocks::MostLeftBlockTest()
 
 	return n->GetPos();
 }
-
-
 
 Blocks::BlockSeg::BlockSeg(Vei2& in_pos, Color c)
 	:
@@ -498,4 +407,9 @@ Vei2 Blocks::BlockSeg::GetPos() const
 Color Blocks::BlockSeg::GetBcolor() const
 {
 	return BColor;
+}
+
+bool Blocks::BlockSeg::GetEmpty() const
+{
+	return Empty;
 }
