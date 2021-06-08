@@ -26,6 +26,7 @@
 #include "Board.h"
 #include "Vec2.h"
 #include "Blocks.h"
+#include "FrameTimer.h"
 #include <random>
 
 class Game
@@ -37,7 +38,7 @@ public:
 	void Go();
 private:
 	void ComposeFrame();
-	void UpdateModel();
+	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -48,7 +49,8 @@ private:
 	/*  User Variables              */
 	/********************************/
 	
-
+	FrameTimer ft;
+	float dt;
 	Board brd;
 	Vei2 delta_loc = { 0, 0 };
 	Blocks ActiveBlocks;

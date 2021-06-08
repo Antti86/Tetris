@@ -33,13 +33,20 @@ Game::Game( MainWindow& wnd )
 
 void Game::Go()
 {
-	gfx.BeginFrame();	
-	UpdateModel();
+	gfx.BeginFrame();
+	float elapsedtime = ft.Mark();
+	while (elapsedtime < 0.0f)
+	{
+		dt = std::min(0.0025f, elapsedtime);
+		UpdateModel(dt);
+		elapsedtime -= dt;
+	}
+	
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
+void Game::UpdateModel(float dt)
 {
 
 	
