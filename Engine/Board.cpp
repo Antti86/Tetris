@@ -51,12 +51,13 @@ void Board::DrawBorder() const
 	const int left = Sloc.x;
 	const int top = 0;
 	const int right = Sloc.x + (BorderWidth + BorderPad) * 2 + Width * CellDimension; //+ CellDimension;
-	const int bottom = gfx.ScreenHeight;
+	const int bottom = Sloc.y + (BorderWidth + BorderPad) * 2 + Height * CellDimension;
 
 	gfx.DrawRect(left, top, left + BorderWidth, bottom - BorderWidth, BorderColor);
 	//left wall
 	gfx.DrawRect(right - BorderWidth, top, right, bottom - BorderWidth, BorderColor);
 	//right wall
+	gfx.DrawRect(left, bottom, right, bottom + BorderWidth, BorderColor);
 }
 
 int Board::GetGridWidth() const
@@ -97,10 +98,10 @@ bool Board::IsInsideBoard(const Vei2& target) const
 
 void Board::FullLine()
 {
-	for (int i = 1; i < Height; ++i)
+	for (int y = 1; y < Height; ++y)
 	{
-		std::vector<CellContent>::iterator itB = Content.begin() + i * Width;
-		std::vector<CellContent>::iterator itE = Content.begin() + i * Width + Width;
+		std::vector<CellContent>::iterator itB = Content.begin() + y * Width;
+		std::vector<CellContent>::iterator itE = Content.begin() + y * Width + Width;
 		if (std::all_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
 		{
 			std::transform(itB, itE, itB, [&](CellContent& c) { return c = CellContent::Empty; });

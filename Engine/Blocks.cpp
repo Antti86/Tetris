@@ -168,7 +168,7 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	else if (kbd.KeyIsPressed(VK_DOWN))
 	{
-		BlockMoveCounterDown += 10.0f;
+		BlockMoveCounterDown += 1.5f;
 	}
 	if (e.IsPress() && e.GetCode() == VK_UP)
 	{
@@ -181,10 +181,11 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 
 void Blocks::MovementSpeed(Vei2& delta_loc)
 {
-	BlockMoveCounterSide += 2.0f;
-	BlockMoveCounterDown += 1.0f;
+	BlockMoveCounterSide += 1.0f;
+	BlockMoveCounterDown += 0.5f;
 	if (BlockMoveCounterDown >= BlockMoveRateDown)
 	{
+		Vei2 test = { 0, 1 };
 		MoveBy(Vei2(0, 1));
 		BlockMoveCounterDown = 0;
 	}
@@ -364,23 +365,6 @@ Vei2 Blocks::MostSideBlock(const char m) const
 	return pos;
 }
 
-Vei2 Blocks::MostLeftBlockTest()
-{
-	std::vector<BlockSeg> test;
-	std::copy_if(MovingBlocks.begin(), MovingBlocks.end(), std::back_inserter(test),
-		[] (BlockSeg& l)
-		{
-			return l.Empty == false;
-		});
-
-	auto n = std::min_element(test.begin(), test.end(),
-		[] (BlockSeg& l, BlockSeg& r)
-		{
-			return l.GetPos().x < r.GetPos().x;
-		});
-
-	return n->GetPos();
-}
 
 Blocks::BlockSeg::BlockSeg(Vei2& in_pos, Color c)
 	:

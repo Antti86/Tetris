@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	brd(gfx),
 	Buffer(Vei2(23, 4)),
-	ActiveBlocks(Vei2(brd.GetGridWidth() / 2 - 1, 3))
+	ActiveBlocks(Vei2(brd.GetGridWidth() / 2 - 2, 0))
 {
 }
 
@@ -35,9 +35,9 @@ void Game::Go()
 {
 	gfx.BeginFrame();
 	float elapsedtime = ft.Mark();
-	while (elapsedtime < 0.0f)
+	while (elapsedtime > 0.0f)
 	{
-		dt = std::min(0.0025f, elapsedtime);
+		float dt = std::min(0.0025f, elapsedtime);
 		UpdateModel(dt);
 		elapsedtime -= dt;
 	}

@@ -50,7 +50,7 @@ private:
 	/********************************/
 	
 	FrameTimer ft;
-	float dt;
+	
 	Board brd;
 	Vei2 delta_loc = { 0, 0 };
 	Blocks ActiveBlocks;

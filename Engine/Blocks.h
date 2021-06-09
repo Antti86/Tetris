@@ -59,7 +59,6 @@ private:
 	BlockType RandomType(std::mt19937& rng);
 	Color RandomColor(std::mt19937& rng);
 	Vei2 MostSideBlock(const char m) const;
-	Vei2 MostLeftBlockTest();
 private:
 	std::vector<BlockSeg> MovingBlocks;
 	std::vector<BlockSeg> StartingPos;
@@ -68,10 +67,11 @@ private:
 	std::mt19937 rng;
 	Color c;
 	Board::CellContent ContentColor;
-	float BlockMoveRateDown = 30.0f;
+
+	float BlockMoveRateDown = 45.0f;		//speed settings
 	float BlockMoveCounterDown = 0;
 
-	float BlockMoveRateSide = 30.0f;
+	float BlockMoveRateSide = 40.0f;
 	float BlockMoveCounterSide = 0;
 
 	static constexpr int top = 4;			//Block mapping
