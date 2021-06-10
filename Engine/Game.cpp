@@ -26,7 +26,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	brd(gfx),
-	Buffer(Vei2(23, 4)),
+	Buffer(Vei2(brd.GetGridWidth() + 4, 4)),
 	ActiveBlocks(Vei2(brd.GetGridWidth() / 2 - 2, 0))
 {
 }

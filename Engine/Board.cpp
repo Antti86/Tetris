@@ -57,7 +57,7 @@ void Board::DrawBorder() const
 	//left wall
 	gfx.DrawRect(right - BorderWidth, top, right, bottom - BorderWidth, BorderColor);
 	//right wall
-	gfx.DrawRect(left, bottom, right, bottom + BorderWidth, BorderColor);
+	gfx.DrawRect(left, bottom, right, bottom - BorderWidth, BorderColor);
 }
 
 int Board::GetGridWidth() const

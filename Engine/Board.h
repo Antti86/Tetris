@@ -32,7 +32,7 @@ public:
 	void FullLine();
 private:
 	Graphics& gfx;
-	Vei2 Sloc = { 180, 20 };
+	Vei2 Sloc = { 280, 20 };
 	int CellDimension = 20;
 	int Width = 10;
 	int Height = 28;
