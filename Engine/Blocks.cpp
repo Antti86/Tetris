@@ -1,6 +1,6 @@
 #include "Blocks.h"
 
-Blocks::Blocks(Vei2& StartPos)
+Blocks::Blocks(Vei2 StartPos)
 	:
 	StartPos(StartPos),
 	rng(std::random_device() ())
@@ -146,7 +146,7 @@ void Blocks::TransferBlocksToBoard(Board& brd)
 
 }
 
-void Blocks::MoveBy(Vei2& delta_loc)
+void Blocks::MoveBy(Vei2 delta_loc)
 {
 	for (auto& s : MovingBlocks)
 	{
@@ -174,6 +174,7 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	{
 		Rotate(brd);
 	}
+	
 	PositionFix(brd);
 	MovementSpeed(delta_loc);
 
@@ -185,7 +186,6 @@ void Blocks::MovementSpeed(Vei2& delta_loc)
 	BlockMoveCounterDown += 0.5f;
 	if (BlockMoveCounterDown >= BlockMoveRateDown)
 	{
-		Vei2 test = { 0, 1 };
 		MoveBy(Vei2(0, 1));
 		BlockMoveCounterDown = 0;
 	}

@@ -41,9 +41,9 @@ private:
 	};
 
 public:
-	Blocks(Vei2& StartPos);
+	Blocks(Vei2 StartPos);
 	Blocks& operator =(const Blocks& b);
-	Blocks(const Blocks&) = delete;
+	//Blocks(const Blocks&) = delete;
 	void Draw(Board& brd) const;
 	void DrawOutsideBoard(Board& brd) const;
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
@@ -51,7 +51,7 @@ public:
 	void TransferBlocksToBoard(Board& brd);
 private:
 	Vei2 GetNextLoc(const Vei2& delta_loc, char m) const;   //ketjuttaa charin kautta toistaseks
-	void MoveBy(Vei2& delta_loc);
+	void MoveBy(Vei2 delta_loc);
 	void MovementSpeed(Vei2& delta_loc);
 	void PositionFix(const Board& brd);
 	void Rotate(const Board& brd);
