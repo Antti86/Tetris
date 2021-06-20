@@ -18,7 +18,7 @@ public:
 		Yellow
 	};
 public:
-	Board(Graphics& gfx);
+	Board(Graphics& gfx, const Vei2& Sloc);
 	void DrawCell(const Vei2& pos, Color c) const;
 	void DrawBlocks();
 	void DrawBorder() const;	//vaatii alarajan
@@ -32,7 +32,7 @@ public:
 	void FullLine();
 private:
 	Graphics& gfx;
-	Vei2 Sloc = { 280, 20 };
+	Vei2 Sloc;
 	int CellDimension = 20;
 	int Width = 10;
 	int Height = 28;

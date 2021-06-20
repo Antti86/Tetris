@@ -24,6 +24,7 @@
 #include "ChiliException.h"
 #include "Colors.h"
 #include "Rect.h"
+#include "Surface.h"
 
 class Graphics
 {
@@ -63,6 +64,59 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+	Color GetPixel(int x, int y) const;
+
+	template<typename E>
+	void DrawSprite(Vei2 pos, const Surface& s, E effect)
+	{
+		DrawSprite(pos, s.GetRect(), s, effect);
+	}
+	template<typename E>
+	void DrawSprite(Vei2 pos, const RectI& srcRect, const Surface& s, E effect)
+	{
+		DrawSprite(pos, srcRect, GetScreenRect(), s, effect);
+	}
+	template<typename E>
+	void DrawSprite(Vei2 pos, RectI srcRect, const RectI& clip, const Surface& s, E effect)
+	{
+		assert(srcRect.left >= 0);
+		assert(srcRect.right <= s.GetWidth());
+		assert(srcRect.top >= 0);
+		assert(srcRect.bottom <= s.GetHeight());
+
+		if (pos.x < clip.left)
+		{
+			srcRect.left += clip.left - pos.x;
+			pos.x = clip.left;
+		}
+		if (pos.y < clip.top)
+		{
+			srcRect.top += clip.top - pos.y;
+			pos.y = clip.top;
+		}
+		if (pos.x + srcRect.GetWidth() > clip.right)
+		{
+			srcRect.right -= pos.x + srcRect.GetWidth() - clip.right;
+		}
+		if (pos.y + srcRect.GetHeight() > clip.bottom)
+		{
+			srcRect.bottom -= pos.y + srcRect.GetHeight() - clip.bottom;
+		}
+
+		for (int sy = srcRect.top; sy < srcRect.bottom; sy++)
+		{
+			for (int sx = srcRect.left; sx < srcRect.right; sx++)
+			{
+				Vei2 t = { pos.x + sx - srcRect.left, pos.y + sy - srcRect.top };
+				effect
+				(
+					s.GetPixel(sx, sy),
+					t,
+					*this
+				);
+			}
+		}
+	}
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
@@ -81,4 +135,8 @@ private:
 public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
+	static RectI GetScreenRect()
+	{
+		return { 0, ScreenWidth, 0, ScreenHeight };
+	}
 };

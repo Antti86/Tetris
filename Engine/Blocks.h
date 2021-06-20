@@ -43,7 +43,7 @@ private:
 public:
 	Blocks(Vei2 StartPos);
 	Blocks& operator =(const Blocks& b);
-	//Blocks(const Blocks&) = delete;
+	Blocks(const Blocks&) = default;
 	void Draw(Board& brd) const;
 	void DrawOutsideBoard(Board& brd) const;
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);

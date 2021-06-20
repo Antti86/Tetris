@@ -25,7 +25,6 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	brd(gfx),
 	Buffer(Vei2(brd.GetGridWidth() + 4, 4)),
 	ActiveBlocks(Vei2(brd.GetGridWidth() / 2 - 2, 0))
 {
@@ -67,6 +66,8 @@ void Game::UpdateModel(float dt)
 
 void Game::ComposeFrame()
 {
+	Vei2 test = { 0, 0 };
+	gfx.DrawSprite(Vei2(0, 0), s, SpriteEffect::GhostNochroma(0.30));
 	brd.DrawBorder();
 	brd.DrawBlocks();
 	ActiveBlocks.Draw(brd);

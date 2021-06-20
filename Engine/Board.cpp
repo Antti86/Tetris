@@ -1,9 +1,10 @@
 #include "Board.h"
 #include "Blocks.h"
 
-Board::Board(Graphics& gfx)
+Board::Board(Graphics& gfx, const Vei2& Sloc)
 	:
-	gfx(gfx)
+	gfx(gfx),
+	Sloc(Sloc)
 {
 }
 

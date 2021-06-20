@@ -28,6 +28,8 @@
 #include "Blocks.h"
 #include "FrameTimer.h"
 #include <random>
+#include "Surface.h"
+#include "SpriteEffect.h"
 
 class Game
 {
@@ -50,8 +52,8 @@ private:
 	/********************************/
 	
 	FrameTimer ft;
-	
-	Board brd;
+	Surface s = Surface("kuvat//sky_background_green_hills.bmp");
+	Board brd = { gfx, Vei2(280, 20) };
 	Vei2 delta_loc = { 0, 0 };
 	Blocks ActiveBlocks;
 	Blocks Buffer;
