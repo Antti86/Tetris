@@ -117,6 +117,9 @@ public:
 			}
 		}
 	}
+
+	void DrawCircle(int x, int y, int radius, Color c);
+	void DrawCircle(const Vec2& pos, int radius, Color c);
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;

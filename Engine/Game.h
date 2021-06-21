@@ -30,6 +30,7 @@
 #include <random>
 #include "Surface.h"
 #include "SpriteEffect.h"
+#include "Font.h"
 
 class Game
 {
@@ -50,7 +51,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-	
+	Font test = { "kuvat//fontsheet.bmp" };
 	FrameTimer ft;
 	Surface s = Surface("kuvat//sky_background_green_hills.bmp");
 	Board brd = { gfx, Vei2(280, 20) };

@@ -66,8 +66,10 @@ void Game::UpdateModel(float dt)
 
 void Game::ComposeFrame()
 {
-	Vei2 test = { 0, 0 };
-	gfx.DrawSprite(Vei2(0, 0), s, SpriteEffect::GhostNochroma(0.30));
+	Vei2 aaa (brd.GetSloc().x - 100, brd.GetSloc().y);
+	test.DrawTexts("0000", aaa, gfx, Colors::White);
+
+	//gfx.DrawSprite(Vei2(0, 0), s, SpriteEffect::GhostNochroma(0.30));
 	brd.DrawBorder();
 	brd.DrawBlocks();
 	ActiveBlocks.Draw(brd);
