@@ -210,6 +210,7 @@ void Blocks::PositionFix(const Board& brd)
 
 void Blocks::Rotate(const Board& brd)
 {
+	
 	std::vector<BlockSeg> temp;
 	temp.reserve(MovingBlocks.size());
 	std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 3, MovingBlocks.end() - 4, std::back_inserter(temp));
@@ -306,6 +307,7 @@ Color Blocks::RandomColor(std::mt19937& rng)
 
 Vei2 Blocks::MostSideBlock(const char m) const
 {
+	
 	Vei2 pos;
 	Vei2 temp;
 	bool FirstActive = false;

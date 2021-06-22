@@ -17,7 +17,7 @@ void Board::DrawCell(const Vei2& pos, Color c) const
 		CellDimension - BlockPad * 2, CellDimension - BlockPad * 2, c);
 }
 
-void Board::DrawBlocks()
+void Board::DrawBlocks() const
 {
 	for (int y = 0; y < Height; y++)
 	{
@@ -61,6 +61,13 @@ void Board::DrawBorder() const
 	gfx.DrawRect(left, bottom, right, bottom - BorderWidth, BorderColor);
 }
 
+void Board::DrawScore() const
+{
+	std::string ScoreCount = std::to_string(score);
+	Vei2 loc(GetSloc().x - 100, GetSloc().y);
+	Score.DrawTexts(ScoreCount, loc, gfx, Colors::White);
+}
+
 int Board::GetGridWidth() const
 {
 	return Width;
@@ -99,14 +106,23 @@ bool Board::IsInsideBoard(const Vei2& target) const
 
 void Board::FullLine()
 {
+	int linecount = 0;
 	for (int y = 1; y < Height; ++y)
 	{
+		
 		std::vector<CellContent>::iterator itB = Content.begin() + y * Width;
 		std::vector<CellContent>::iterator itE = Content.begin() + y * Width + Width;
-		if (std::all_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
+
+		if(std::all_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
 		{
 			std::transform(itB, itE, itB, [&](CellContent& c) { return c = CellContent::Empty; });
 			std::rotate(Content.begin(), itE - Width, itE);
+			linecount += 1;
+			score += 100;
+			if (linecount == 4)
+			{
+				score += 400;
+			}
 		}
 	}
 }

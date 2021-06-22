@@ -23,7 +23,7 @@ public:
 
 public:
 	MenuScreen(const std::string& text, const Surface& filename, const Vei2& in_textpos);
-	void Draw(Graphics& gfx);
+	void Draw(Graphics& gfx) const;
 	Options ProcessMenu(Keyboard& kbd);
 private:
 	void DrawSelectionPointer(Graphics& gfx, const Vei2& StartMenuP) const;

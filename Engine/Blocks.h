@@ -9,6 +9,7 @@
 #include <iterator>
 #include <functional>
 
+
 class Blocks
 {
 public:
@@ -80,5 +81,5 @@ private:
 	static constexpr int left = 2;
 	static constexpr int midlle = 4;
 	static constexpr int Linerialtotal = top + right + bottom + left + midlle;
-
+	
 };

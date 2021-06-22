@@ -33,6 +33,7 @@ Game::Game( MainWindow& wnd )
 void Game::Go()
 {
 	gfx.BeginFrame();
+	
 	float elapsedtime = ft.Mark();
 	while (elapsedtime > 0.0f)
 	{
@@ -40,7 +41,7 @@ void Game::Go()
 		UpdateModel(dt);
 		elapsedtime -= dt;
 	}
-	
+
 	ComposeFrame();
 	gfx.EndFrame();
 }
@@ -66,12 +67,11 @@ void Game::UpdateModel(float dt)
 
 void Game::ComposeFrame()
 {
-	Vei2 aaa (brd.GetSloc().x - 100, brd.GetSloc().y);
-	test.DrawTexts("0000", aaa, gfx, Colors::White);
-
-	//gfx.DrawSprite(Vei2(0, 0), s, SpriteEffect::GhostNochroma(0.30));
+	
 	brd.DrawBorder();
 	brd.DrawBlocks();
+	brd.DrawScore();
 	ActiveBlocks.Draw(brd);
 	Buffer.DrawOutsideBoard(brd);
+
 }

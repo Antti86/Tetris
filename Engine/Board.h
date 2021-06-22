@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include "Colors.h"
+#include "Font.h"
 
 
 class Board
@@ -20,8 +21,9 @@ public:
 public:
 	Board(Graphics& gfx, const Vei2& Sloc);
 	void DrawCell(const Vei2& pos, Color c) const;
-	void DrawBlocks();
-	void DrawBorder() const;	//vaatii alarajan
+	void DrawBlocks() const;
+	void DrawBorder() const;
+	void DrawScore() const;
 	int GetGridWidth() const;
 	int GetGridHeight() const;
 	int GetCellDimension() const;
@@ -42,5 +44,7 @@ private:
 	int BorderPad = 1;
 	int BlockPad = 1;
 	Color BorderColor = Colors::Gray;
+	Font Score = { "kuvat//fontsheet.bmp" };
+	int score = 0;
 	
 };

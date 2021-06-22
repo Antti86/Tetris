@@ -14,7 +14,7 @@ MenuScreen::MenuScreen(const std::string& text, const Surface& filename, const V
 
 
 
-void MenuScreen::Draw(Graphics& gfx)
+void MenuScreen::Draw(Graphics& gfx) const
 {
 	SpriteEffect::NoChroma E;
 	gfx.DrawSprite(Vei2(0, 0), BackGround, E);

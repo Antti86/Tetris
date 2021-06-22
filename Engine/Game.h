@@ -31,6 +31,7 @@
 #include "Surface.h"
 #include "SpriteEffect.h"
 #include "Font.h"
+#include "Bencher.h"
 
 class Game
 {
@@ -51,6 +52,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	Bencher time;
 	Font test = { "kuvat//fontsheet.bmp" };
 	FrameTimer ft;
 	Surface s = Surface("kuvat//sky_background_green_hills.bmp");
