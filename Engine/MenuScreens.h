@@ -22,16 +22,20 @@ public:
 	};
 
 public:
-	MenuScreen(const std::string& text, const Surface& filename, const Vei2& in_textpos);
-	void Draw(Graphics& gfx) const;
+	MenuScreen(const std::string& text, const Surface& filename, const Vei2& in_textpos, Color textcolor, Color Pointercolor);
+	MenuScreen(const std::string& text, const Vei2& in_textpos, Color textcolor, Color Pointercolor);
+	void DrawWithBackground(Graphics& gfx) const;
+	void DrawWithOutBackground(Graphics& gfx) const;
 	Options ProcessMenu(Keyboard& kbd);
 private:
 	void DrawSelectionPointer(Graphics& gfx, const Vei2& StartMenuP) const;
 	void MenuMovement(const Keyboard::Event& e);
 	void SetSelectionPos();
 private:
-	const Surface& BackGround;
-	Font Menu = Font("kuvat//fontsheet.bmp");
+	const Surface BackGround;
+	Font Menu = Font("kuvat//Consolas13x24.bmp");
+	Color textcolor;
+	Color Pointercolor;
 	Vei2 textpos;
 	int menucount;
 	Vei2 SelPointPos;

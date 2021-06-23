@@ -31,10 +31,17 @@
 #include "Surface.h"
 #include "SpriteEffect.h"
 #include "Font.h"
+#include "MenuScreens.h"
 #include "Bencher.h"
 
 class Game
 {
+	enum class GameState
+	{
+		MainMenu,
+		Playing,
+		GameOver
+	};
 public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
@@ -53,11 +60,12 @@ private:
 	/*  User Variables              */
 	/********************************/
 	Bencher time;
-	Font test = { "kuvat//fontsheet.bmp" };
 	FrameTimer ft;
-	Surface s = Surface("kuvat//sky_background_green_hills.bmp");
+	MenuScreen StartMenu = { "Play\nQuit", Vei2(100, 100), Colors::White, Colors::Red };
+	Surface gameover = { "kuvat//game_over.bmp" };
 	Board brd = { gfx, Vei2(280, 20) };
 	Vei2 delta_loc = { 0, 0 };
 	Blocks ActiveBlocks;
 	Blocks Buffer;
+	GameState state = GameState::MainMenu;
 };

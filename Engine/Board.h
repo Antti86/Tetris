@@ -44,7 +44,7 @@ private:
 	int BorderPad = 1;
 	int BlockPad = 1;
 	Color BorderColor = Colors::Gray;
-	Font Score = { "kuvat//fontsheet.bmp" };
+	Font Score = { "kuvat//Consolas13x24.bmp" };
 	int score = 0;
-	
+	int lines = 0;
 };

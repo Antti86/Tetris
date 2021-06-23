@@ -1,12 +1,26 @@
 #include "MenuScreens.h"
 
 
-MenuScreen::MenuScreen(const std::string& text, const Surface& filename, const Vei2& in_textpos)
+MenuScreen::MenuScreen(const std::string& text, const Surface& filename, const Vei2& in_textpos, Color textcolor, Color Pointercolor)
 	:
 	menutext(text),
 	textpos(in_textpos),
 	BackGround(filename),
-	menucount(0)
+	menucount(0),
+	textcolor(textcolor),
+	Pointercolor(Pointercolor)
+{
+	nlines = Menu.GetNumberOfLines(text);
+	SetSelectionPos();
+}
+
+MenuScreen::MenuScreen(const std::string& text, const Vei2& in_textpos, Color textcolor, Color Pointercolor)
+	:
+	menutext(text),
+	textpos(in_textpos),
+	menucount(0),
+	textcolor(textcolor),
+	Pointercolor(Pointercolor)
 {
 	nlines = Menu.GetNumberOfLines(text);
 	SetSelectionPos();
@@ -14,18 +28,25 @@ MenuScreen::MenuScreen(const std::string& text, const Surface& filename, const V
 
 
 
-void MenuScreen::Draw(Graphics& gfx) const
+
+void MenuScreen::DrawWithBackground(Graphics& gfx) const
 {
 	SpriteEffect::NoChroma E;
 	gfx.DrawSprite(Vei2(0, 0), BackGround, E);
-	Menu.DrawTexts(menutext, textpos, gfx, Colors::Red);
+	Menu.DrawTexts(menutext, textpos, gfx, textcolor);
+	DrawSelectionPointer(gfx, SelPointPos);
+}
+
+void MenuScreen::DrawWithOutBackground(Graphics& gfx) const
+{
+	Menu.DrawTexts(menutext, textpos, gfx, textcolor);
 	DrawSelectionPointer(gfx, SelPointPos);
 }
 
 
 void MenuScreen::DrawSelectionPointer(Graphics& gfx, const Vei2& StartMenuP) const
 {
-	gfx.DrawCircle(StartMenuP.x, StartMenuP.y, cRadius, Colors::Blue);
+	gfx.DrawCircle(StartMenuP.x, StartMenuP.y, cRadius, Pointercolor);
 }
 
 void MenuScreen::MenuMovement(const Keyboard::Event& e) 

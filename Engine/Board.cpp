@@ -64,8 +64,16 @@ void Board::DrawBorder() const
 void Board::DrawScore() const
 {
 	std::string ScoreCount = std::to_string(score);
-	Vei2 loc(GetSloc().x - 100, GetSloc().y);
-	Score.DrawTexts(ScoreCount, loc, gfx, Colors::White);
+	std::string LineCount = std::to_string(lines);
+	Vei2 ScoreCountLoc(GetSloc().x - 100, GetSloc().y + 30);
+	Vei2 ScoreTextLoc(GetSloc().x - 150, GetSloc().y);
+	Vei2 LineCountloc(GetSloc().x - 100, GetSloc().y + 130);
+	Vei2 LineTextloc(GetSloc().x - 150, GetSloc().y + 100);
+
+	Score.DrawTexts(ScoreCount, ScoreCountLoc, gfx, Colors::White);
+	Score.DrawTexts("Score", ScoreTextLoc, gfx, Colors::White);
+	Score.DrawTexts(LineCount, LineCountloc, gfx, Colors::White);
+	Score.DrawTexts("Lines", LineTextloc, gfx, Colors::White);
 }
 
 int Board::GetGridWidth() const
@@ -118,10 +126,19 @@ void Board::FullLine()
 			std::transform(itB, itE, itB, [&](CellContent& c) { return c = CellContent::Empty; });
 			std::rotate(Content.begin(), itE - Width, itE);
 			linecount += 1;
+			lines += 1;
 			score += 100;
 			if (linecount == 4)
 			{
-				score += 400;
+				score += 500;
+			}
+			else if (linecount == 3)
+			{
+				score += 100;
+			}
+			else if (linecount == 2)
+			{
+				score += 50;
 			}
 		}
 	}

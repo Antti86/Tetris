@@ -49,29 +49,63 @@ void Game::Go()
 void Game::UpdateModel(float dt)
 {
 
-	
-	if (ActiveBlocks.CollisionDown(brd))
+	if (state == GameState::MainMenu)
 	{
-		ActiveBlocks.TransferBlocksToBoard(brd);
-		ActiveBlocks = Buffer;
-		Buffer = Blocks(Vei2(24, 4));
-		brd.FullLine();
+		MenuScreen::Options s = StartMenu.ProcessMenu(wnd.kbd);
+		switch (s)
+		{
+		case MenuScreen::Options::Opt1:
+			state = GameState::Playing;
+			break;
+		case MenuScreen::Options::Opt2:
+			wnd.Kill();
+			break;
+		}
 	}
-	else
+	else if(state == GameState::Playing)
 	{
-		ActiveBlocks.Movement(delta_loc, wnd.kbd, brd);
+		if (ActiveBlocks.CollisionDown(brd))
+		{
+			ActiveBlocks.TransferBlocksToBoard(brd);
+			ActiveBlocks = Buffer;
+			Buffer = Blocks(Vei2(24, 4));
+			brd.FullLine();
+		}
+		else
+		{
+			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd);
+		}
 	}
+	else if (state == GameState::GameOver)
+	{
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			state = GameState::MainMenu;
+		}
+	}
+
 
 
 }
 
 void Game::ComposeFrame()
 {
-	
-	brd.DrawBorder();
-	brd.DrawBlocks();
-	brd.DrawScore();
-	ActiveBlocks.Draw(brd);
-	Buffer.DrawOutsideBoard(brd);
+	if (state == GameState::MainMenu)
+	{
+		StartMenu.DrawWithOutBackground(gfx);
+	}
+	else if(state == GameState::Playing)
+	{
+		brd.DrawBorder();
+		brd.DrawBlocks();
+		brd.DrawScore();
+		ActiveBlocks.Draw(brd);
+		Buffer.DrawOutsideBoard(brd);
+	}
+	else if (state == GameState::GameOver)
+	{
+		SpriteEffect::NoChroma E;
+		gfx.DrawSprite(Vei2(100, 100), gameover, E);
+	}
 
 }
