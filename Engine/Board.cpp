@@ -121,6 +121,11 @@ void Board::FullLine()
 		std::vector<CellContent>::iterator itB = Content.begin() + y * Width;
 		std::vector<CellContent>::iterator itE = Content.begin() + y * Width + Width;
 
+		if (y < 3 && std::any_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
+		{
+			gameover = true;
+		}
+
 		if(std::all_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
 		{
 			std::transform(itB, itE, itB, [&](CellContent& c) { return c = CellContent::Empty; });
@@ -142,4 +147,20 @@ void Board::FullLine()
 			}
 		}
 	}
+}
+
+bool Board::FailCondition() const
+{
+	return gameover;
+}
+
+void Board::ResetBoard()
+{
+	for (auto& s : Content)
+	{
+		s = CellContent::Empty;
+	}
+	score = 0;
+	lines = 0;
+	gameover = false;
 }

@@ -32,6 +32,9 @@ public:
 	CellContent SetCellContent(const Vei2& pos, CellContent ContentType);
 	bool IsInsideBoard(const Vei2& target) const;
 	void FullLine();
+	bool FailCondition() const;
+	void ResetBoard();
+	
 private:
 	Graphics& gfx;
 	Vei2 Sloc;
@@ -47,4 +50,5 @@ private:
 	Font Score = { "kuvat//Consolas13x24.bmp" };
 	int score = 0;
 	int lines = 0;
+	bool gameover = false;
 };
