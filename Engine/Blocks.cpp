@@ -5,8 +5,9 @@ Blocks::Blocks(Vei2 StartPos)
 	StartPos(StartPos),
 	rng(std::random_device() ())
 {
-	RandomType(rng);
-	RandomColor(rng);
+	
+	type = RandomType(rng);
+	c = RandomColor(rng);
 	Vei2 loc = StartPos;
 
 	MovingBlocks.reserve(Linerialtotal);			//Linerial Grid for easier rotation
@@ -146,6 +147,22 @@ void Blocks::TransferBlocksToBoard(Board& brd)
 
 }
 
+void Blocks::LevelCheck(const Board& brd)
+{
+	if (brd.GetLineNumber() < 5)
+	{
+		lvl = Levels::Level1;
+	}
+	else if (brd.GetLineNumber() > 5 && brd.GetLineNumber() < 40)
+	{
+		lvl = Levels::Level2;
+	}
+	else if (brd.GetLineNumber() > 40)
+	{
+		lvl = Levels::Level3;
+	}
+}
+
 void Blocks::MoveBy(Vei2 delta_loc)
 {
 	for (auto& s : MovingBlocks)
@@ -282,25 +299,75 @@ Color Blocks::RandomColor(std::mt19937& rng)
 {
 	std::uniform_int_distribution<int> randtype(0, 3);
 	int random = randtype(rng);
-	if (random == 0)
+
+	if (lvl == Levels::Level1)
 	{
-		c = Colors::Blue;
-		ContentColor = Board::CellContent::Blue;
+		if (random == 0)
+		{
+			c = Colors::Blue;
+			ContentColor = Board::CellContent::Blue;
+		}
+		else if (random == 1)
+		{
+			c = Colors::Cyan;
+			ContentColor = Board::CellContent::Cyan;
+		}
+		else if (random == 2)
+		{
+			c = Colors::MidnightBlue;
+			ContentColor = Board::CellContent::MidnightBlue;
+		}
+		else if (random == 3)
+		{
+			c = Colors::White;
+			ContentColor = Board::CellContent::White;
+		}
 	}
-	else if (random == 1)
+	else if (lvl == Levels::Level2)
 	{
-		c = Colors::Green;
-		ContentColor = Board::CellContent::Green;
+		if (random == 0)
+		{
+			c = Colors::Green;
+			ContentColor = Board::CellContent::Green;
+		}
+		else if (random == 1)
+		{
+			c = Colors::DarkGreen;
+			ContentColor = Board::CellContent::DarkGreen;
+		}
+		else if (random == 2)
+		{
+			c = Colors::LawnGreen;
+			ContentColor = Board::CellContent::LawnGreen;
+		}
+		else if (random == 3)
+		{
+			c = Colors::Yellow;
+			ContentColor = Board::CellContent::Yellow;
+		}
 	}
-	else if (random == 2)
+	else if (lvl == Levels::Level3)
 	{
-		c = Colors::Red;
-		ContentColor = Board::CellContent::Red;
-	}
-	else if (random == 3)
-	{
-		c = Colors::Yellow;
-		ContentColor = Board::CellContent::Yellow;
+		if (random == 0)
+		{
+			c = Colors::DarkRed;
+			ContentColor = Board::CellContent::DarkRed;
+		}
+		else if (random == 1)
+		{
+			c = Colors::Scarlet;
+			ContentColor = Board::CellContent::Scarlet;
+		}
+		else if (random == 2)
+		{
+			c = Colors::Red;
+			ContentColor = Board::CellContent::Red;
+		}
+		else if (random == 3)
+		{
+			c = Colors::Orange;
+			ContentColor = Board::CellContent::Orange;
+		}
 	}
 	return c;
 }

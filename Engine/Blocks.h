@@ -23,6 +23,13 @@ public:
 		MirrorN,
 		MirrorL
 	};
+public:
+	enum class Levels
+	{
+		Level1,
+		Level2,
+		Level3
+	};
 
 private:
 	class BlockSeg
@@ -44,12 +51,13 @@ private:
 public:
 	Blocks(Vei2 StartPos);
 	Blocks& operator =(const Blocks& b);
-	Blocks(const Blocks&) = default;
+	Blocks(const Blocks&) = delete;
 	void Draw(Board& brd) const;
 	void DrawOutsideBoard(Board& brd) const;
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd);
 	bool CollisionDown(const Board& brd) const;
 	void TransferBlocksToBoard(Board& brd);
+	void LevelCheck(const Board& brd);
 private:
 	Vei2 GetNextLoc(const Vei2& delta_loc, char m) const;   //ketjuttaa charin kautta toistaseks
 	void MoveBy(Vei2 delta_loc);
@@ -68,6 +76,7 @@ private:
 	std::mt19937 rng;
 	Color c;
 	Board::CellContent ContentColor;
+	Levels lvl;
 
 	float BlockMoveRateDown = 45.0f;		//speed settings
 	float BlockMoveCounterDown = 0;

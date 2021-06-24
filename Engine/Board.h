@@ -14,10 +14,20 @@ public:
 	{
 		Empty,
 		Blue,
+		MidnightBlue,
+		Cyan,
+		White,
 		Green,
+		LawnGreen,
+		DarkGreen,
+		Yellow,
 		Red,
-		Yellow
+		Scarlet,
+		DarkRed,
+		Orange,
 	};
+
+
 public:
 	Board(Graphics& gfx, const Vei2& Sloc);
 	void DrawCell(const Vei2& pos, Color c) const;
@@ -32,8 +42,9 @@ public:
 	CellContent SetCellContent(const Vei2& pos, CellContent ContentType);
 	bool IsInsideBoard(const Vei2& target) const;
 	void FullLine();
-	bool FailCondition() const;
+	bool FailCondition();
 	void ResetBoard();
+	int GetLineNumber() const;
 	
 private:
 	Graphics& gfx;
@@ -50,5 +61,5 @@ private:
 	Font Score = { "kuvat//Consolas13x24.bmp" };
 	int score = 0;
 	int lines = 0;
-	bool gameover = false;
+	
 };

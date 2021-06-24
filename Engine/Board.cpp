@@ -39,6 +39,30 @@ void Board::DrawBlocks() const
 			case CellContent::Yellow:
 				DrawCell({ x,y }, Colors::Yellow);
 				break;
+			case CellContent::Cyan:
+				DrawCell({ x,y }, Colors::Cyan);
+				break;
+			case CellContent::DarkGreen:
+				DrawCell({ x,y }, Colors::DarkGreen);
+				break;
+			case CellContent::DarkRed:
+				DrawCell({ x,y }, Colors::DarkRed);
+				break;
+			case CellContent::LawnGreen:
+				DrawCell({ x,y }, Colors::LawnGreen);
+				break;
+			case CellContent::MidnightBlue:
+				DrawCell({ x,y }, Colors::MidnightBlue);
+				break;
+			case CellContent::Orange:
+				DrawCell({ x,y }, Colors::Orange);
+				break;
+			case CellContent::White:
+				DrawCell({ x,y }, Colors::White);
+				break;
+			case CellContent::Scarlet:
+				DrawCell({ x,y }, Colors::Scarlet);
+				break;
 			}
 		}
 	}
@@ -121,11 +145,6 @@ void Board::FullLine()
 		std::vector<CellContent>::iterator itB = Content.begin() + y * Width;
 		std::vector<CellContent>::iterator itE = Content.begin() + y * Width + Width;
 
-		if (y < 3 && std::any_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
-		{
-			gameover = true;
-		}
-
 		if(std::all_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
 		{
 			std::transform(itB, itE, itB, [&](CellContent& c) { return c = CellContent::Empty; });
@@ -149,8 +168,22 @@ void Board::FullLine()
 	}
 }
 
-bool Board::FailCondition() const
+bool Board::FailCondition()
 {
+	bool gameover;
+	for (int y = 1; y < 4; ++y)
+	{
+		std::vector<CellContent>::iterator itB = Content.begin() + y * Width;
+		std::vector<CellContent>::iterator itE = Content.begin() + y * Width + Width;
+		if (std::any_of(itB, itE, [&](CellContent& c) {return c != CellContent::Empty; }))
+		{
+			gameover = true;
+		}
+		else
+		{
+			gameover = false;
+		}
+	}
 	return gameover;
 }
 
@@ -162,5 +195,13 @@ void Board::ResetBoard()
 	}
 	score = 0;
 	lines = 0;
-	gameover = false;
 }
+
+int Board::GetLineNumber() const
+{
+	return lines;
+}
+
+
+
+

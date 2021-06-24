@@ -64,12 +64,9 @@ void Game::UpdateModel(float dt)
 	}
 	else if(state == GameState::Playing)
 	{
+		
 		if (ActiveBlocks.CollisionDown(brd))
 		{
-			if (brd.FailCondition())
-			{
-				state = GameState::GameOver;
-			}
 			ActiveBlocks.TransferBlocksToBoard(brd);
 			ActiveBlocks = Buffer;
 			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0));
@@ -78,6 +75,10 @@ void Game::UpdateModel(float dt)
 		else
 		{
 			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd);
+		}
+		if (brd.FailCondition())
+		{
+			state = GameState::GameOver;
 		}
 	}
 	else if (state == GameState::GameOver)
