@@ -1,13 +1,13 @@
 #include "Blocks.h"
 
-Blocks::Blocks(Vei2 StartPos)
+Blocks::Blocks(Vei2 StartPos, const Board& brd)
 	:
 	StartPos(StartPos),
 	rng(std::random_device() ())
 {
 	
 	type = RandomType(rng);
-	c = RandomColor(rng);
+	c = RandomColor(rng, brd);
 	Vei2 loc = StartPos;
 
 	MovingBlocks.reserve(Linerialtotal);			//Linerial Grid for easier rotation
@@ -147,21 +147,6 @@ void Blocks::TransferBlocksToBoard(Board& brd)
 
 }
 
-void Blocks::LevelCheck(const Board& brd)
-{
-	if (brd.GetLineNumber() < 5)
-	{
-		lvl = Levels::Level1;
-	}
-	else if (brd.GetLineNumber() > 5 && brd.GetLineNumber() < 40)
-	{
-		lvl = Levels::Level2;
-	}
-	else if (brd.GetLineNumber() > 40)
-	{
-		lvl = Levels::Level3;
-	}
-}
 
 void Blocks::MoveBy(Vei2 delta_loc)
 {
@@ -295,12 +280,12 @@ Blocks::BlockType Blocks::RandomType(std::mt19937& rng)
 	return type;
 }
 
-Color Blocks::RandomColor(std::mt19937& rng)
+Color Blocks::RandomColor(std::mt19937& rng, const Board& brd)
 {
 	std::uniform_int_distribution<int> randtype(0, 3);
 	int random = randtype(rng);
 
-	if (lvl == Levels::Level1)
+	if (brd.GetLvl() == Board::Levels::Level1)
 	{
 		if (random == 0)
 		{
@@ -323,7 +308,7 @@ Color Blocks::RandomColor(std::mt19937& rng)
 			ContentColor = Board::CellContent::White;
 		}
 	}
-	else if (lvl == Levels::Level2)
+	else if (brd.GetLvl() == Board::Levels::Level2)
 	{
 		if (random == 0)
 		{
@@ -346,7 +331,7 @@ Color Blocks::RandomColor(std::mt19937& rng)
 			ContentColor = Board::CellContent::Yellow;
 		}
 	}
-	else if (lvl == Levels::Level3)
+	else if (brd.GetLvl() == Board::Levels::Level3)
 	{
 		if (random == 0)
 		{

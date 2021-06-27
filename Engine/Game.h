@@ -68,4 +68,5 @@ private:
 	Blocks ActiveBlocks;
 	Blocks Buffer;
 	GameState state = GameState::MainMenu;
+	
 };

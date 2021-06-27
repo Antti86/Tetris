@@ -25,8 +25,8 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	Buffer(Vei2(brd.GetGridWidth() + 4, 4)),
-	ActiveBlocks(Vei2(brd.GetGridWidth() / 2 - 2, 0))
+	Buffer(Vei2(brd.GetGridWidth() + 4, 4), brd),
+	ActiveBlocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd)
 {
 }
 
@@ -69,7 +69,7 @@ void Game::UpdateModel(float dt)
 		{
 			ActiveBlocks.TransferBlocksToBoard(brd);
 			ActiveBlocks = Buffer;
-			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0));
+			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
 			brd.FullLine();
 		}
 		else
@@ -84,8 +84,8 @@ void Game::UpdateModel(float dt)
 	else if (state == GameState::GameOver)
 	{
 		brd.ResetBoard();
-		ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0));
-		Buffer = (Vei2(brd.GetGridWidth() / 2 - 2, 0));
+		ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+		Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
 		const Keyboard::Event e = wnd.kbd.ReadKey();
 		if (e.IsPress() && e.GetCode() == VK_RETURN)
 		{

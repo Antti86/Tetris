@@ -151,6 +151,7 @@ void Board::FullLine()
 			std::rotate(Content.begin(), itE - Width, itE);
 			linecount += 1;
 			lines += 1;
+			LevelCheck();
 			score += 100;
 			if (linecount == 4)
 			{
@@ -195,11 +196,33 @@ void Board::ResetBoard()
 	}
 	score = 0;
 	lines = 0;
+	lvl = Levels::Level1;
 }
 
 int Board::GetLineNumber() const
 {
 	return lines;
+}
+
+void Board::LevelCheck()
+{
+	if (lines < 3)
+	{
+		lvl = Levels::Level1;
+	}
+	else if (lines > 3 && lines < 10)
+	{
+		lvl = Levels::Level2;
+	}
+	else if (lines > 10)
+	{
+		lvl = Levels::Level3;
+	}
+}
+
+Board::Levels Board::GetLvl() const
+{
+	return lvl;
 }
 
 

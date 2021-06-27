@@ -26,6 +26,13 @@ public:
 		DarkRed,
 		Orange,
 	};
+public:
+	enum class Levels
+	{
+		Level1,
+		Level2,
+		Level3
+	};
 
 
 public:
@@ -45,7 +52,9 @@ public:
 	bool FailCondition();
 	void ResetBoard();
 	int GetLineNumber() const;
-	
+	Levels GetLvl() const;
+private:
+	void LevelCheck();
 private:
 	Graphics& gfx;
 	Vei2 Sloc;
@@ -61,5 +70,5 @@ private:
 	Font Score = { "kuvat//Consolas13x24.bmp" };
 	int score = 0;
 	int lines = 0;
-	
+	Levels lvl = Levels::Level1;
 };
