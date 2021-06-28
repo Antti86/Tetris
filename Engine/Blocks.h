@@ -73,6 +73,7 @@ private:
 
 	float BlockMoveRateDown = 0.3f;		//speed settings
 	float BlockMoveCounterDown = 0;
+	static constexpr float StartSpeed = 0.3f;
 
 	float BlockMoveRateSide = 0.1f;
 	float BlockMoveCounterSide = 0;

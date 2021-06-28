@@ -206,15 +206,15 @@ int Board::GetLineNumber() const
 
 void Board::LevelCheck()
 {
-	if (lines < 3)
+	if (lines < 10)
 	{
 		lvl = Levels::Level1;
 	}
-	else if (lines > 3 && lines < 10)
+	else if (lines > 10 && lines < 20)
 	{
 		lvl = Levels::Level2;
 	}
-	else if (lines > 10)
+	else if (lines > 20)
 	{
 		lvl = Levels::Level3;
 	}

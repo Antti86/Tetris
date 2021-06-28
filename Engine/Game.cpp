@@ -84,14 +84,14 @@ void Game::UpdateModel(float dt)
 	}
 	else if (state == GameState::GameOver)
 	{
-		brd.ResetBoard();
-		ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
-		Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+
 		const Keyboard::Event e = wnd.kbd.ReadKey();
 		if (e.IsPress() && e.GetCode() == VK_RETURN)
 		{
 			state = GameState::MainMenu;
-
+			brd.ResetBoard();
+			ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
 		}
 	}
 
@@ -115,6 +115,7 @@ void Game::ComposeFrame()
 	}
 	else if (state == GameState::GameOver)
 	{
+		brd.DrawScore();
 		SpriteEffect::NoChroma E;
 		gfx.DrawSprite(Vei2(250, 200), gameover, E);
 	}

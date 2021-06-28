@@ -144,9 +144,7 @@ void Blocks::TransferBlocksToBoard(Board& brd)
 			brd.SetCellContent(pos, ContentColor);
 		}
 	}
-
 }
-
 
 void Blocks::MoveBy(Vei2 delta_loc)
 {
@@ -158,6 +156,7 @@ void Blocks::MoveBy(Vei2 delta_loc)
 
 void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt)
 {
+	LevelCheck(brd);
 	delta_loc = { 0, 1 };
 	const Keyboard::Event e = kbd.ReadKey();
 	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}) && !TestNextLoc(brd, Vei2(-1, 0)))
@@ -212,7 +211,6 @@ void Blocks::PositionFix(const Board& brd)
 
 void Blocks::Rotate(const Board& brd)
 {
-	
 	std::vector<BlockSeg> temp;
 	temp.reserve(MovingBlocks.size());
 	std::rotate_copy(MovingBlocks.begin(), MovingBlocks.begin() + 3, MovingBlocks.end() - 4, std::back_inserter(temp));
@@ -232,7 +230,6 @@ void Blocks::Rotate(const Board& brd)
 	{
 
 	}
-
 }
 
 bool Blocks::TestNextLoc(const Board& brd, const Vei2& side) const
@@ -359,7 +356,6 @@ Color Blocks::RandomColor(std::mt19937& rng, const Board& brd)
 
 Vei2 Blocks::MostSideBlock(const char m) const
 {
-	
 	Vei2 pos;
 	Vei2 temp;
 	bool FirstActive = false;
@@ -421,14 +417,7 @@ Vei2 Blocks::MostSideBlock(const char m) const
 
 void Blocks::LevelCheck(const Board& brd)
 {
-	if (brd.GetLvl() == Board::Levels::Level1)
-	{
-		BlockMoveRateDown = 0.3f;
-	}
-	else if (brd.GetLvl() == Board::Levels::Level2)
-	{
-		BlockMoveRateDown = 0.2f;
-	}
+	BlockMoveRateDown = StartSpeed - (0.005f * brd.GetLineNumber());
 }
 
 
