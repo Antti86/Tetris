@@ -67,6 +67,7 @@ void Game::UpdateModel(float dt)
 		
 		if (ActiveBlocks.CollisionDown(brd))
 		{
+			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt);
 			ActiveBlocks.TransferBlocksToBoard(brd);
 			ActiveBlocks = Buffer;
 			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
@@ -74,7 +75,7 @@ void Game::UpdateModel(float dt)
 		}
 		else
 		{
-			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd);
+			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt);
 		}
 		if (brd.FailCondition())
 		{

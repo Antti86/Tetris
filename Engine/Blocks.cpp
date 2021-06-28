@@ -156,7 +156,7 @@ void Blocks::MoveBy(Vei2 delta_loc)
 	}
 }
 
-void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
+void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt)
 {
 	delta_loc = { 0, 1 };
 	const Keyboard::Event e = kbd.ReadKey();
@@ -170,7 +170,7 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	else if (kbd.KeyIsPressed(VK_DOWN))
 	{
-		BlockMoveCounterDown += 1.5f;
+		BlockMoveCounterDown += dt + (BlockMoveRateDown * 0.06f);
 	}
 	if (e.IsPress() && e.GetCode() == VK_UP)
 	{
@@ -178,14 +178,14 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd)
 	}
 	
 	PositionFix(brd);
-	MovementSpeed(delta_loc);
+	MovementSpeed(delta_loc, dt, brd);
 
 }
 
-void Blocks::MovementSpeed(Vei2& delta_loc)
+void Blocks::MovementSpeed(Vei2& delta_loc, float dt, const Board& brd)
 {
-	BlockMoveCounterSide += 1.0f;
-	BlockMoveCounterDown += 0.5f;
+	BlockMoveCounterSide += dt;
+	BlockMoveCounterDown += dt;
 	if (BlockMoveCounterDown >= BlockMoveRateDown)
 	{
 		MoveBy(Vei2(0, 1));
@@ -417,6 +417,18 @@ Vei2 Blocks::MostSideBlock(const char m) const
 		
 	}
 	return pos;
+}
+
+void Blocks::LevelCheck(const Board& brd)
+{
+	if (brd.GetLvl() == Board::Levels::Level1)
+	{
+		BlockMoveRateDown = 0.3f;
+	}
+	else if (brd.GetLvl() == Board::Levels::Level2)
+	{
+		BlockMoveRateDown = 0.2f;
+	}
 }
 
 
