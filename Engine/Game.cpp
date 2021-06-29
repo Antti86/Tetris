@@ -58,6 +58,8 @@ void Game::UpdateModel(float dt)
 			state = GameState::Playing;
 			break;
 		case MenuScreen::Options::Opt2:
+			break;
+		case MenuScreen::Options::Opt3:
 			wnd.Kill();
 			break;
 		}
@@ -81,6 +83,10 @@ void Game::UpdateModel(float dt)
 		{
 			state = GameState::GameOver;
 		}
+	}
+	else if (state == GameState::HighScore)
+	{
+
 	}
 	else if (state == GameState::GameOver)
 	{
@@ -112,6 +118,10 @@ void Game::ComposeFrame()
 		brd.DrawScore();
 		ActiveBlocks.Draw(brd);
 		Buffer.DrawOutsideBoard(brd);
+	}
+	else if (state == GameState::HighScore)
+	{
+
 	}
 	else if (state == GameState::GameOver)
 	{

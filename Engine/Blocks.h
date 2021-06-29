@@ -75,7 +75,7 @@ private:
 	float BlockMoveCounterDown = 0;
 	static constexpr float StartSpeed = 0.3f;
 
-	float BlockMoveRateSide = 0.1f;
+	float BlockMoveRateSide = 0.07f;
 	float BlockMoveCounterSide = 0;
 
 	static constexpr int top = 4;			//Block mapping

@@ -204,6 +204,11 @@ int Board::GetLineNumber() const
 	return lines;
 }
 
+int Board::GetScore() const
+{
+	return score;
+}
+
 void Board::LevelCheck()
 {
 	if (lines < 10)

@@ -52,6 +52,7 @@ public:
 	bool FailCondition();
 	void ResetBoard();
 	int GetLineNumber() const;
+	int GetScore() const;
 	Levels GetLvl() const;
 private:
 	void LevelCheck();
