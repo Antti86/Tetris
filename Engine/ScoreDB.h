@@ -1,10 +1,10 @@
 #pragma once
 #include <fstream>
-#include <ostream>
 #include <vector>
 #include <string>
 #include "Font.h"
 #include "Board.h"
+#include <sstream>
 
 
 class ScoreDB
@@ -14,7 +14,7 @@ private:
 	{
 	public:
 		Entry(const Board& brd);
-
+		Entry(int Score, int Lines);
 	private:
 		int Score;
 		int Lines;

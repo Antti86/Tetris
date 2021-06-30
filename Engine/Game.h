@@ -33,6 +33,7 @@
 #include "Font.h"
 #include "MenuScreens.h"
 #include "Bencher.h"
+#include "ScoreTest.h"
 
 class Game
 {
@@ -64,6 +65,7 @@ private:
 	FrameTimer ft;
 	MenuScreen StartMenu = { " Play\n HighScore\n Quit", Vei2(100, 100), Colors::White, Colors::Red };
 	Surface gameover = { "kuvat//game_over.bmp" };
+	ScoreTest st;
 	Board brd = { gfx, Vei2(280, 20) };
 	Vei2 delta_loc = { 0, 0 };
 	Blocks ActiveBlocks;

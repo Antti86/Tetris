@@ -58,6 +58,7 @@ void Game::UpdateModel(float dt)
 			state = GameState::Playing;
 			break;
 		case MenuScreen::Options::Opt2:
+			state = GameState::HighScore;
 			break;
 		case MenuScreen::Options::Opt3:
 			wnd.Kill();
@@ -86,11 +87,15 @@ void Game::UpdateModel(float dt)
 	}
 	else if (state == GameState::HighScore)
 	{
-
+		const Keyboard::Event e = wnd.kbd.ReadKey();
+		if (e.IsPress() && e.GetCode() == VK_RETURN)
+		{
+			state = GameState::MainMenu;
+		}
 	}
 	else if (state == GameState::GameOver)
 	{
-
+		st.Save(brd);
 		const Keyboard::Event e = wnd.kbd.ReadKey();
 		if (e.IsPress() && e.GetCode() == VK_RETURN)
 		{
@@ -121,7 +126,7 @@ void Game::ComposeFrame()
 	}
 	else if (state == GameState::HighScore)
 	{
-
+		st.LoadAndDraw(gfx);
 	}
 	else if (state == GameState::GameOver)
 	{
