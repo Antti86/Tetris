@@ -96,10 +96,11 @@ void Game::UpdateModel(float dt)
 	else if (state == GameState::GameOver)
 	{
 		//st.Save(brd);
-		db.SaveScore(brd);
+
 		const Keyboard::Event e = wnd.kbd.ReadKey();
 		if (e.IsPress() && e.GetCode() == VK_RETURN)
 		{
+			db.SaveScore(brd);
 			state = GameState::MainMenu;
 			brd.ResetBoard();
 			ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);

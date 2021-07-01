@@ -7,7 +7,7 @@ ScoreDB::ScoreDB()
 
 void ScoreDB::LoadAndDrawScore(Graphics& gfx)
 {
-	Load();
+	//Load();
 
 	std::string FScore = std::to_string(entries[0].Score);
 	std::string SScore = std::to_string(entries[1].Score);
@@ -40,56 +40,61 @@ void ScoreDB::LoadAndDrawScore(Graphics& gfx)
 
 void ScoreDB::SaveScore(const Board& brd)
 {
-	entries.reserve(4);
+	entries.reserve(5);
 	std::ifstream in("Teksti//Score.txt");
 	
-	Load();
-	entries.emplace_back(Entry(brd));
+	std::ostringstream file;
+	
+	file << in.rdbuf();
+
+	std::string text = file.str();
+	std::string searchScore0 = std::to_string(entries[0].Score);
+	std::string searchScore1 = std::to_string(entries[1].Score);
+	std::string searchScore2 = std::to_string(entries[2].Score);
+
+	std::string searchLine0 = std::to_string(entries[0].Lines);
+	std::string searchLine1 = std::to_string(entries[1].Lines);
+	std::string searchLine2 = std::to_string(entries[2].Lines);
+
+	size_t posScore0 = text.find(searchScore0);
+	size_t posScore1 = text.find(searchScore1);
+	size_t posScore2 = text.find(searchScore2);
+
+	size_t posLine0 = text.find(searchLine0);
+	size_t posLine1 = text.find(searchLine1);
+	size_t posLine2 = text.find(searchLine2);
+	
+	lines = brd.GetLineNumber();
+	score = brd.GetScore();
+	entries.emplace_back(Entry(score, lines));
 
 	std::sort(entries.begin(), entries.end(), [](const Entry& l, const Entry& r) {return l.Score > r.Score; });
 	
+	std::string replaceScore0 = std::to_string(entries[0].Score);
+	std::string replaceScore1 = std::to_string(entries[1].Score);
+	std::string replaceScore2 = std::to_string(entries[2].Score);
+
+	std::string replaceLine0 = std::to_string(entries[0].Lines);
+	std::string replaceLine1 = std::to_string(entries[1].Lines);
+	std::string replaceLine2 = std::to_string(entries[2].Lines);
+
+	text.replace(posScore0, std::string(searchScore0).length(), replaceScore0);
+	text.replace(posScore1, std::string(searchScore1).length(), replaceScore1);
+	text.replace(posScore2, std::string(searchScore2).length(), replaceScore2);
+
+	text.replace(posLine0, std::string(searchLine0).length(), replaceLine0);
+	text.replace(posLine1, std::string(searchLine1).length(), replaceLine1);
+	text.replace(posLine2, std::string(searchLine2).length(), replaceLine2);
+	in.close();
 	std::ofstream out("Teksti//Score.txt");
+	out << text;
+	out.close();
 
-	for (std::string line; std::getline(in, line);)
-	{
-		if (line == "1.Score:")
-		{
-			out << entries[0].Score;
-		}
-		else if (line == "1.Lines:")
-		{
-			out << entries[0].Lines;
-		}
-		else if (line == "2.Score:")
-		{
-			out << entries[1].Score;
-		}
-		else if (line == "2.Lines:")
-		{
-			out << entries[1].Lines;
-		}
-		else if (line == "3.Score:")
-		{
-			out << entries[2].Score;
-		}
-		else if (line == "3.Lines:")
-		{
-			out << entries[2].Lines;
-		}
-		else if (line.empty())
-		{
-
-		}
-		else
-		{
-
-		}
-	}
 }
 
 void ScoreDB::Load()
 {
-	entries.reserve(3);
+	entries.reserve(5);
 	std::ifstream in("Teksti//Score.txt");
 	for (std::string line; std::getline(in, line);)
 	{
@@ -134,12 +139,7 @@ void ScoreDB::Load()
 	}
 }
 
-ScoreDB::Entry::Entry(const Board& brd)
-	:
-	Lines(brd.GetLineNumber()),
-	Score(brd.GetScore())
-{
-}
+
 
 ScoreDB::Entry::Entry(int Score, int Lines)
 	:

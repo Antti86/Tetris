@@ -15,7 +15,6 @@ private:
 	{
 		friend class ScoreDB;
 	public:
-		Entry(const Board& brd);
 		Entry(int Score, int Lines);
 	private:
 		int Score;
