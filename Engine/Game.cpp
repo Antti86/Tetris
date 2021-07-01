@@ -95,7 +95,8 @@ void Game::UpdateModel(float dt)
 	}
 	else if (state == GameState::GameOver)
 	{
-		st.Save(brd);
+		//st.Save(brd);
+		db.SaveScore(brd);
 		const Keyboard::Event e = wnd.kbd.ReadKey();
 		if (e.IsPress() && e.GetCode() == VK_RETURN)
 		{
@@ -126,7 +127,8 @@ void Game::ComposeFrame()
 	}
 	else if (state == GameState::HighScore)
 	{
-		st.LoadAndDraw(gfx);
+		//st.LoadAndDraw(gfx);
+		db.LoadAndDrawScore(gfx);
 	}
 	else if (state == GameState::GameOver)
 	{
