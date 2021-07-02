@@ -20,22 +20,24 @@ void ScoreDB::LoadAndDrawScore(Graphics& gfx)
 	HighScore.DrawTexts("HighScore ", Vei2(200, 100), gfx, Colors::White);
 
 	HighScore.DrawTexts("1.Score: ", Vei2(100, 150), gfx, Colors::White);
-	HighScore.DrawTexts("1.Lines: ", Vei2(100, 180), gfx, Colors::White);
+	HighScore.DrawTexts("  Lines: ", Vei2(100, 180), gfx, Colors::White);
 
 	HighScore.DrawTexts("2.Score: ", Vei2(100, 220), gfx, Colors::White);
-	HighScore.DrawTexts("2.Lines: ", Vei2(100, 250), gfx, Colors::White);
+	HighScore.DrawTexts("  Lines: ", Vei2(100, 250), gfx, Colors::White);
 
 	HighScore.DrawTexts("3.Score: ", Vei2(100, 290), gfx, Colors::White);
-	HighScore.DrawTexts("3.Lines: ", Vei2(100, 320), gfx, Colors::White);
+	HighScore.DrawTexts("  Lines: ", Vei2(100, 320), gfx, Colors::White);
 
-	HighScore.DrawTexts(FScore, Vei2(330, 150), gfx, Colors::White);
-	HighScore.DrawTexts(FLines, Vei2(330, 180), gfx, Colors::White);
+	Vei2 spos = { 330, 150 };
+	Vei2 lpos = { 330, 180 };
+	for (int i = 0; i < 3; i++)
+	{
+		HighScore.DrawTexts(std::to_string(entries[i].Score), spos, gfx, Colors::White);
+		HighScore.DrawTexts(std::to_string(entries[i].Lines), lpos, gfx, Colors::White);
+		spos.y += 70;
+		lpos.y += 70;
+	}
 
-	HighScore.DrawTexts(SScore, Vei2(330, 220), gfx, Colors::White);
-	HighScore.DrawTexts(SLines, Vei2(330, 250), gfx, Colors::White);
-
-	HighScore.DrawTexts(TScore, Vei2(330, 290), gfx, Colors::White);
-	HighScore.DrawTexts(TLines, Vei2(330, 320), gfx, Colors::White);
 }
 
 void ScoreDB::SaveScore(const Board& brd)
@@ -147,3 +149,4 @@ ScoreDB::Entry::Entry(int Score, int Lines)
 	Lines(Lines)
 {
 }
+
