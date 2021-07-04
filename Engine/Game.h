@@ -34,6 +34,7 @@
 #include "MenuScreens.h"
 #include "Bencher.h"
 #include "ScoreDB.h"
+#include "ScoreTest.h"
 
 
 class Game
@@ -72,4 +73,5 @@ private:
 	Blocks ActiveBlocks;
 	Blocks Buffer;
 	GameState state = GameState::MainMenu;
+	ScoreTest t;
 };

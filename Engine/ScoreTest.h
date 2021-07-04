@@ -15,6 +15,11 @@ public:
 	void LoadAndDraw(Graphics& gfx);
 
 private:
-	int Score;
+	int FirstScore;
+	int SecondScore;
+	int ThirdScore;
+	int FirstLine;
+	int SecondLine;
+	int ThirdLine;
 	Font HighScore = { "kuvat//Consolas13x24.bmp" };
 };

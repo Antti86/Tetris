@@ -100,8 +100,8 @@ void Game::UpdateModel(float dt)
 		const Keyboard::Event e = wnd.kbd.ReadKey();
 		if (e.IsPress() && e.GetCode() == VK_RETURN)
 		{
-
-			db.SaveScore(brd);
+			t.Save(brd);
+			//db.SaveScore(brd);
 			state = GameState::MainMenu;
 			brd.ResetBoard();
 			ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
@@ -129,7 +129,8 @@ void Game::ComposeFrame()
 	}
 	else if (state == GameState::HighScore)
 	{
-		db.LoadAndDrawScore(gfx);
+		t.LoadAndDraw(gfx);
+		//db.LoadAndDrawScore(gfx);
 	}
 	else if (state == GameState::GameOver)
 	{
