@@ -154,8 +154,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="MenuScreens.h" />
-    <ClInclude Include="ScoreDB.h" />
-    <ClInclude Include="ScoreTest.h" />
+    <ClInclude Include="HighScore.h" />
     <ClInclude Include="SpriteEffect.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Vec2.h" />
@@ -173,8 +172,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MenuScreens.cpp" />
-    <ClCompile Include="ScoreDB.cpp" />
-    <ClCompile Include="ScoreTest.cpp" />
+    <ClCompile Include="HighScore.cpp" />
     <ClCompile Include="Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -249,7 +247,7 @@
     <Image Include="kuvat\sky_background_green_hills.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Teksti\Score.txt" />
+    <Text Include="Teksti\HighScore.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

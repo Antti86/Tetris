@@ -78,10 +78,7 @@
     <ClInclude Include="Bencher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreDB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreTest.h">
+    <ClInclude Include="HighScore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -125,10 +122,7 @@
     <ClCompile Include="MenuScreens.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreDB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreTest.cpp">
+    <ClCompile Include="HighScore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -160,7 +154,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Teksti\Score.txt">
+    <Text Include="Teksti\HighScore.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

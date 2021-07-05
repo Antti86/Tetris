@@ -215,11 +215,11 @@ void Board::LevelCheck()
 	{
 		lvl = Levels::Level1;
 	}
-	else if (lines > 10 && lines < 20)
+	else if (lines > 20 && lines < 40)
 	{
 		lvl = Levels::Level2;
 	}
-	else if (lines > 20)
+	else if (lines > 40)
 	{
 		lvl = Levels::Level3;
 	}

@@ -22,19 +22,15 @@
 
 #include "Keyboard.h"
 #include "Mouse.h"
-#include "Graphics.h"
 #include "Board.h"
-#include "Vec2.h"
 #include "Blocks.h"
 #include "FrameTimer.h"
 #include <random>
 #include "Surface.h"
 #include "SpriteEffect.h"
-#include "Font.h"
 #include "MenuScreens.h"
 #include "Bencher.h"
-#include "ScoreDB.h"
-#include "ScoreTest.h"
+#include "HighScore.h"
 
 
 class Game
@@ -67,11 +63,10 @@ private:
 	FrameTimer ft;
 	MenuScreen StartMenu = { " Play\n HighScore\n Quit", Vei2(100, 100), Colors::White, Colors::Red };
 	Surface gameover = { "kuvat//game_over.bmp" };
-	ScoreDB db;
 	Board brd = { gfx, Vei2(280, 20) };
 	Vei2 delta_loc = { 0, 0 };
 	Blocks ActiveBlocks;
 	Blocks Buffer;
 	GameState state = GameState::MainMenu;
-	ScoreTest t;
+	HighScore Score;
 };
