@@ -120,17 +120,17 @@ void Game::ComposeFrame()
 	{
 		brd.DrawBorder();
 		brd.DrawBlocks();
-		brd.DrawScore();
+		Score.DrawScore(brd, gfx);
 		ActiveBlocks.Draw(brd);
 		Buffer.DrawOutsideBoard(brd);
 	}
 	else if (state == GameState::HighScore)
 	{
-		Score.Draw(gfx);
+		Score.DrawHighScoreScreen(gfx);
 	}
 	else if (state == GameState::GameOver)
 	{
-		brd.DrawScore();
+		Score.DrawScore(brd, gfx);
 		SpriteEffect::NoChroma E;
 		gfx.DrawSprite(Vei2(250, 200), gameover, E);
 	}

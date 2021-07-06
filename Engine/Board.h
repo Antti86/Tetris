@@ -40,7 +40,6 @@ public:
 	void DrawCell(const Vei2& pos, Color c) const;
 	void DrawBlocks() const;
 	void DrawBorder() const;
-	void DrawScore() const;
 	int GetGridWidth() const;
 	int GetGridHeight() const;
 	int GetCellDimension() const;

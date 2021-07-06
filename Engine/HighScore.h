@@ -22,7 +22,8 @@ private:
 public:
 	HighScore();
 	void Save(const Board& brd);
-	void Draw(Graphics& gfx);
+	void DrawHighScoreScreen(Graphics& gfx);
+	void DrawScore(const Board& brd, Graphics& gfx) const;
 private:
 	std::vector<Entrys> entries;
 	Font Score = { "kuvat//Consolas13x24.bmp" };

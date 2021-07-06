@@ -40,7 +40,7 @@ void HighScore::Save(const Board& brd)
 		entries[0].Lines << "\n" << entries[1].Lines << "\n" << entries[2].Lines;
 }
 
-void HighScore::Draw(Graphics& gfx)
+void HighScore::DrawHighScoreScreen(Graphics& gfx)
 {
 	Score.DrawTexts("HighScore ", Vei2(200, 100), gfx, Colors::White);
 
@@ -66,10 +66,26 @@ void HighScore::Draw(Graphics& gfx)
 		spos.y += 70;
 		lpos.y += 70;
 	}
-	/*if (newhighscore)
+}
+
+void HighScore::DrawScore(const Board& brd, Graphics& gfx) const
+{
+	std::string ScoreCount = std::to_string(brd.GetScore());
+	std::string LineCount = std::to_string(brd.GetLineNumber());
+	Vei2 ScoreCountLoc(brd.GetSloc().x - 100, brd.GetSloc().y + 30);
+	Vei2 ScoreTextLoc(brd.GetSloc().x - 150, brd.GetSloc().y);
+	Vei2 LineCountloc(brd.GetSloc().x - 100, brd.GetSloc().y + 130);
+	Vei2 LineTextloc(brd.GetSloc().x - 150, brd.GetSloc().y + 100);
+
+	Score.DrawTexts(ScoreCount, ScoreCountLoc, gfx, Colors::White);
+	Score.DrawTexts("Score", ScoreTextLoc, gfx, Colors::White);
+	Score.DrawTexts(LineCount, LineCountloc, gfx, Colors::White);
+	Score.DrawTexts("Lines", LineTextloc, gfx, Colors::White);
+
+	if (brd.GetScore() > entries[0].Score)
 	{
-		Score.DrawTexts("New HighScore", Vei2(500, 200), gfx, Colors::Blue);
-	}*/
+		Score.DrawTexts("New HighScore!", Vei2(50, 500), gfx, Colors::Blue);
+	}
 }
 
 HighScore::Entrys::Entrys(int Score, int Lines)
