@@ -61,6 +61,9 @@ void Game::UpdateModel(float dt)
 			state = GameState::HighScore;
 			break;
 		case MenuScreen::Options::Opt3:
+			state = GameState::Settings;
+			break;
+		case MenuScreen::Options::Opt4:
 			wnd.Kill();
 			break;
 		}
@@ -70,7 +73,7 @@ void Game::UpdateModel(float dt)
 		
 		if (ActiveBlocks.CollisionDown(brd))
 		{
-			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt);
+			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt, settings);
 			ActiveBlocks.TransferBlocksToBoard(brd);
 			ActiveBlocks = Buffer;
 			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
@@ -78,7 +81,7 @@ void Game::UpdateModel(float dt)
 		}
 		else
 		{
-			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt);
+			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt, settings);
 		}
 		if (brd.FailCondition())
 		{
@@ -92,6 +95,17 @@ void Game::UpdateModel(float dt)
 		{
 			state = GameState::MainMenu;
 		}
+	}
+	else if (state == GameState::Settings)
+	{
+		const Keyboard::Event e = wnd.kbd.ReadKey();
+		settings.ProccesKeys(e);
+		if (e.IsPress() && e.GetCode() == VK_RETURN)
+		{
+			settings.Save();
+			state = GameState::MainMenu;
+		}
+		
 	}
 	else if (state == GameState::GameOver)
 	{
@@ -127,6 +141,10 @@ void Game::ComposeFrame()
 	else if (state == GameState::HighScore)
 	{
 		Score.DrawHighScoreScreen(gfx);
+	}
+	else if (state == GameState::Settings)
+	{
+		settings.Draw(gfx);
 	}
 	else if (state == GameState::GameOver)
 	{

@@ -31,6 +31,7 @@
 #include "MenuScreens.h"
 #include "Bencher.h"
 #include "HighScore.h"
+#include "GameSettings.h"
 
 
 class Game
@@ -40,6 +41,7 @@ class Game
 		MainMenu,
 		Playing,
 		HighScore,
+		Settings,
 		GameOver
 	};
 public:
@@ -61,7 +63,7 @@ private:
 	/********************************/
 	Bencher time;
 	FrameTimer ft;
-	MenuScreen StartMenu = { " Play\n HighScore\n Quit", Vei2(100, 100), Colors::White, Colors::Red };
+	MenuScreen StartMenu = { " Play\n HighScore\n Settings\n Quit", Vei2(100, 100), Colors::White, Colors::Red };
 	Surface gameover = { "kuvat//game_over.bmp" };
 	Board brd = { gfx, Vei2(280, 20) };
 	Vei2 delta_loc = { 0, 0 };
@@ -69,4 +71,5 @@ private:
 	Blocks Buffer;
 	GameState state = GameState::MainMenu;
 	HighScore Score;
+	GameSettings settings;
 };

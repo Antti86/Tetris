@@ -154,7 +154,7 @@ void Blocks::MoveBy(Vei2 delta_loc)
 	}
 }
 
-void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt)
+void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt, GameSettings& g)
 {
 	LevelCheck(brd);
 	delta_loc = { 0, 1 };
@@ -177,12 +177,13 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt
 	}
 	
 	PositionFix(brd);
-	MovementSpeed(delta_loc, dt, brd);
+	MovementSpeed(delta_loc, dt, brd, g);
 
 }
 
-void Blocks::MovementSpeed(Vei2& delta_loc, float dt, const Board& brd)
+void Blocks::MovementSpeed(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g)
 {
+	BlockMoveRateSide = g.TranslateSpeed();
 	BlockMoveCounterSide += dt;
 	BlockMoveCounterDown += dt;
 	if (BlockMoveCounterDown >= BlockMoveRateDown)

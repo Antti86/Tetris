@@ -5,6 +5,7 @@
 #include <random>
 #include "Board.h"
 #include "Keyboard.h"
+#include "GameSettings.h"
 #include <algorithm>
 #include <iterator>
 #include <functional>
@@ -47,13 +48,13 @@ public:
 	Blocks(const Blocks&) = delete;
 	void Draw(Board& brd) const;
 	void DrawOutsideBoard(Board& brd) const;
-	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt);
+	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt, GameSettings& g);
 	bool CollisionDown(const Board& brd) const;
 	void TransferBlocksToBoard(Board& brd);
 private:
 	Vei2 GetNextLoc(const Vei2& delta_loc, char m) const;   //ketjuttaa charin kautta toistaseks
 	void MoveBy(Vei2 delta_loc);
-	void MovementSpeed(Vei2& delta_loc, float dt, const Board& brd);
+	void MovementSpeed(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g);
 	void PositionFix(const Board& brd);
 	void Rotate(const Board& brd);
 	bool TestNextLoc(const Board& brd, const Vei2& side) const;
@@ -70,12 +71,11 @@ private:
 	Color c;
 	Board::CellContent ContentColor;
 
-
 	float BlockMoveRateDown = 0.3f;		//speed settings
 	float BlockMoveCounterDown = 0;
 	static constexpr float StartSpeed = 0.3f;
 
-	float BlockMoveRateSide = 0.07f;
+	float BlockMoveRateSide;
 	float BlockMoveCounterSide = 0;
 
 	static constexpr int top = 4;			//Block mapping
