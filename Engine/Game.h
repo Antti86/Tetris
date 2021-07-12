@@ -52,7 +52,6 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel(float dt);
-	bool Timer(float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/

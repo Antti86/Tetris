@@ -96,6 +96,13 @@ void Game::UpdateModel(float dt)
 		{
 			state = GameState::GameOver;
 		}
+		if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+		{
+			brd.ResetBoard();
+			ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+			state = GameState::MainMenu;
+		}
 	}
 	else if (state == GameState::HighScore)
 	{
@@ -133,24 +140,7 @@ void Game::UpdateModel(float dt)
 
 }
 
-bool Game::Timer(float dt)
-{
-	float StartTime = 0.0f;
-	const float EndTime = 0.05f;
-	bool TimerEnd;
-	
-	while (StartTime < EndTime + 0.1f)
-	{
-		StartTime += dt;
-		TimerEnd = false;
-		if (StartTime >= EndTime)
-		{
-			TimerEnd = true;
-			break;
-		}
-	}
-	return TimerEnd;
-}
+
 
 void Game::ComposeFrame()
 {
