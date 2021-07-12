@@ -52,6 +52,7 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel(float dt);
+	bool Timer(float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -72,4 +73,6 @@ private:
 	GameState state = GameState::MainMenu;
 	HighScore Score;
 	GameSettings settings;
+	float StartTime = 0.0f;
+	static constexpr float EndTime = 0.3f;
 };

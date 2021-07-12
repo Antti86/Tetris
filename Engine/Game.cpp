@@ -73,11 +73,20 @@ void Game::UpdateModel(float dt)
 		
 		if (ActiveBlocks.CollisionDown(brd))
 		{
-			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt, settings);
-			ActiveBlocks.TransferBlocksToBoard(brd);
-			ActiveBlocks = Buffer;
-			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
-			brd.FullLine();
+
+			if ((StartTime += dt) <= EndTime)
+			{
+				
+				ActiveBlocks.SideMovement(delta_loc, wnd.kbd, brd, dt, settings);
+			}
+			else
+			{
+				StartTime = 0.0f;
+				ActiveBlocks.TransferBlocksToBoard(brd);
+				ActiveBlocks = Buffer;
+				Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+				brd.FullLine();
+			}
 		}
 		else
 		{
@@ -122,6 +131,25 @@ void Game::UpdateModel(float dt)
 
 
 
+}
+
+bool Game::Timer(float dt)
+{
+	float StartTime = 0.0f;
+	const float EndTime = 0.05f;
+	bool TimerEnd;
+	
+	while (StartTime < EndTime + 0.1f)
+	{
+		StartTime += dt;
+		TimerEnd = false;
+		if (StartTime >= EndTime)
+		{
+			TimerEnd = true;
+			break;
+		}
+	}
+	return TimerEnd;
 }
 
 void Game::ComposeFrame()

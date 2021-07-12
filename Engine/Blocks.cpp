@@ -146,6 +146,24 @@ void Blocks::TransferBlocksToBoard(Board& brd)
 	}
 }
 
+void Blocks::SideMovement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt, GameSettings& g)
+{
+	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}) && !TestNextLoc(brd, Vei2(-1, 0)))
+	{
+		delta_loc = { -1, 0 };
+	}
+	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}) && !TestNextLoc(brd, Vei2(1, 0)))
+	{
+		delta_loc = { 1, 0 };
+	}
+	else
+	{
+		delta_loc = { 0, 0 };
+	}
+	PositionFix(brd);
+	MovementSpeedSide(delta_loc, dt, brd, g);
+}
+
 void Blocks::MoveBy(Vei2 delta_loc)
 {
 	for (auto& s : MovingBlocks)
@@ -177,24 +195,29 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt
 	}
 	
 	PositionFix(brd);
-	MovementSpeed(delta_loc, dt, brd, g);
-
+	MovementSpeedSide(delta_loc, dt, brd, g);
+	MovementSpeedDown(delta_loc, dt, brd);
 }
 
-void Blocks::MovementSpeed(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g)
+void Blocks::MovementSpeedSide(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g)
 {
 	BlockMoveRateSide = g.TranslateSpeed();
 	BlockMoveCounterSide += dt;
+
+	if (BlockMoveCounterSide >= BlockMoveRateSide && (delta_loc == Vei2{ -1, 0 } || delta_loc == Vei2{ 1, 0 }))
+	{
+		MoveBy(delta_loc);
+		BlockMoveCounterSide = 0;
+	}
+}
+
+void Blocks::MovementSpeedDown(Vei2& delta_loc, float dt, const Board& brd)
+{
 	BlockMoveCounterDown += dt;
 	if (BlockMoveCounterDown >= BlockMoveRateDown)
 	{
 		MoveBy(Vei2(0, 1));
 		BlockMoveCounterDown = 0;
-	}
-	if (BlockMoveCounterSide >= BlockMoveRateSide && (delta_loc == Vei2{ -1, 0 } || delta_loc == Vei2{ 1, 0 }))
-	{
-		MoveBy(delta_loc);
-		BlockMoveCounterSide = 0;
 	}
 }
 
