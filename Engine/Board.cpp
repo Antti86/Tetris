@@ -63,13 +63,37 @@ void Board::DrawBlocks() const
 			case CellContent::Scarlet:
 				DrawCell({ x,y }, Colors::Scarlet);
 				break;
+			case CellContent::LightGray:
+				DrawCell({ x,y }, Colors::LightGray);
+				break;
+			case CellContent::Gray:
+				DrawCell({ x,y }, Colors::Gray);
+				break;
+			case CellContent::Teal:
+				DrawCell({ x,y }, Colors::Teal);
+				break;
+			case CellContent::Lime:
+				DrawCell({ x,y }, Colors::Lime);
+				break;
+			case CellContent::LightGreen:
+				DrawCell({ x,y }, Colors::LightGreen);
+				break;
+			case CellContent::SpringGreen:
+				DrawCell({ x,y }, Colors::SpringGreen);
+				break;
+			case CellContent::Purple:
+				DrawCell({ x,y }, Colors::Purple);
+				break;
+			case CellContent::DarkMagneta:
+				DrawCell({ x,y }, Colors::DarkMagneta);
+				break;
+			case CellContent::Chocolate:
+				DrawCell({ x,y }, Colors::Chocolate);
+				break;
 			}
 		}
 	}
 }
-
-
-
 
 void Board::DrawBorder() const
 {
@@ -84,8 +108,6 @@ void Board::DrawBorder() const
 	//right wall
 	gfx.DrawRect(left, bottom, right, bottom - BorderWidth, BorderColor);
 }
-
-
 
 int Board::GetGridWidth() const
 {

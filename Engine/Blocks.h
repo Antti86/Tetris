@@ -61,7 +61,7 @@ private:
 	void Rotate(const Board& brd);
 	bool TestNextLoc(const Board& brd, const Vei2& side) const;
 	BlockType RandomType(std::mt19937& rng);
-	Color RandomColor(std::mt19937& rng, const Board& brd);
+	Color SetColor(const Board& brd);
 	Vei2 MostSideBlock(const char m) const;
 	void LevelCheck(const Board& brd);
 private:
