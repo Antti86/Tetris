@@ -68,9 +68,9 @@ private:
 	Graphics& gfx;
 	Vei2 Sloc;
 	int CellDimension = 20;
-	int Width = 10;
-	int Height = 28;
-	int TotalGridCells = Width * Height;
+	static constexpr int Width = 10;
+	static constexpr int Height = 28;
+	static constexpr int TotalGridCells = Width * Height;
 	std::vector<CellContent> Content = { TotalGridCells, CellContent::Empty };
 	int BorderWidth = 5;
 	int BorderPad = 1;

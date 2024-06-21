@@ -58,6 +58,8 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	float dt;
+	float elapsedtime;
 	/********************************/
 	/*  User Variables              */
 	/********************************/

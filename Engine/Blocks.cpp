@@ -196,7 +196,7 @@ void Blocks::MovementSpeedSide(Vei2& delta_loc, float dt, const Board& brd, Game
 	BlockMoveRateSide = g.TranslateSpeed();
 	BlockMoveCounterSide += dt;
 
-	if (BlockMoveCounterSide >= BlockMoveRateSide && (delta_loc == Vei2{ -1, 0 } || delta_loc == Vei2{ 1, 0 }))
+	if (BlockMoveCounterSide >= BlockMoveRateSide && (delta_loc == Vei2( - 1, 0 ) || delta_loc == Vei2( 1, 0 )))
 	{
 		MoveBy(delta_loc);
 		BlockMoveCounterSide = 0;

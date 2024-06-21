@@ -34,10 +34,10 @@ void Game::Go()
 {
 	gfx.BeginFrame();
 	
-	float elapsedtime = ft.Mark();
+	elapsedtime = ft.Mark();
 	while (elapsedtime > 0.0f)
 	{
-		float dt = std::min(0.0025f, elapsedtime);
+		dt = std::min(0.0025f, elapsedtime);
 		UpdateModel(dt);
 		elapsedtime -= dt;
 	}
