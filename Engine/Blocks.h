@@ -51,15 +51,17 @@ public:
 	void Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt, GameSettings& g);
 	bool CollisionDown(const Board& brd) const;
 	void TransferBlocksToBoard(Board& brd);
+	void SideMovement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt, GameSettings& g);
 private:
 	Vei2 GetNextLoc(const Vei2& delta_loc, char m) const;   //ketjuttaa charin kautta toistaseks
 	void MoveBy(Vei2 delta_loc);
-	void MovementSpeed(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g);
+	void MovementSpeedSide(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g);
+	void MovementSpeedDown(Vei2& delta_loc, float dt, const Board& brd);
 	void PositionFix(const Board& brd);
 	void Rotate(const Board& brd);
 	bool TestNextLoc(const Board& brd, const Vei2& side) const;
 	BlockType RandomType(std::mt19937& rng);
-	Color RandomColor(std::mt19937& rng, const Board& brd);
+	Color SetColor(const Board& brd);
 	Vei2 MostSideBlock(const char m) const;
 	void LevelCheck(const Board& brd);
 private:

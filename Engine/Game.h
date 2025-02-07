@@ -58,6 +58,8 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	float dt;
+	float elapsedtime;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
@@ -72,4 +74,6 @@ private:
 	GameState state = GameState::MainMenu;
 	HighScore Score;
 	GameSettings settings;
+	float StartTime = 0.0f;
+	static constexpr float EndTime = 0.3f;
 };

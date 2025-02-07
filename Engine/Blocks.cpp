@@ -7,7 +7,7 @@ Blocks::Blocks(Vei2 StartPos, const Board& brd)
 {
 	
 	type = RandomType(rng);
-	c = RandomColor(rng, brd);
+	c = SetColor(brd);
 	Vei2 loc = StartPos;
 
 	MovingBlocks.reserve(Linerialtotal);			//Linerial Grid for easier rotation
@@ -146,6 +146,24 @@ void Blocks::TransferBlocksToBoard(Board& brd)
 	}
 }
 
+void Blocks::SideMovement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt, GameSettings& g)
+{
+	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}) && !TestNextLoc(brd, Vei2(-1, 0)))
+	{
+		delta_loc = { -1, 0 };
+	}
+	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}) && !TestNextLoc(brd, Vei2(1, 0)))
+	{
+		delta_loc = { 1, 0 };
+	}
+	else
+	{
+		delta_loc = { 0, 0 };
+	}
+	PositionFix(brd);
+	MovementSpeedSide(delta_loc, dt, brd, g);
+}
+
 void Blocks::MoveBy(Vei2 delta_loc)
 {
 	for (auto& s : MovingBlocks)
@@ -159,15 +177,8 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt
 	LevelCheck(brd);
 	delta_loc = { 0, 1 };
 	const Keyboard::Event e = kbd.ReadKey();
-	if (kbd.KeyIsPressed(VK_LEFT) && brd.IsInsideBoard(MostSideBlock('l') += {-1, 0}) && !TestNextLoc(brd, Vei2(-1, 0)))
-	{
-		delta_loc = { -1, 0 };
-	}
-	else if (kbd.KeyIsPressed(VK_RIGHT) && brd.IsInsideBoard(MostSideBlock('r') += {1, 0}) && !TestNextLoc(brd, Vei2(1, 0)))
-	{
-		delta_loc = { 1, 0 };
-	}
-	else if (kbd.KeyIsPressed(VK_DOWN))
+	SideMovement(delta_loc, kbd, brd, dt, g);
+	if (kbd.KeyIsPressed(VK_DOWN))
 	{
 		BlockMoveCounterDown += dt + (BlockMoveRateDown * 0.06f);
 	}
@@ -177,24 +188,28 @@ void Blocks::Movement(Vei2& delta_loc, Keyboard& kbd, const Board& brd, float dt
 	}
 	
 	PositionFix(brd);
-	MovementSpeed(delta_loc, dt, brd, g);
-
+	MovementSpeedDown(delta_loc, dt, brd);
 }
 
-void Blocks::MovementSpeed(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g)
+void Blocks::MovementSpeedSide(Vei2& delta_loc, float dt, const Board& brd, GameSettings& g)
 {
 	BlockMoveRateSide = g.TranslateSpeed();
 	BlockMoveCounterSide += dt;
+
+	if (BlockMoveCounterSide >= BlockMoveRateSide && (delta_loc == Vei2( - 1, 0 ) || delta_loc == Vei2( 1, 0 )))
+	{
+		MoveBy(delta_loc);
+		BlockMoveCounterSide = 0;
+	}
+}
+
+void Blocks::MovementSpeedDown(Vei2& delta_loc, float dt, const Board& brd)
+{
 	BlockMoveCounterDown += dt;
 	if (BlockMoveCounterDown >= BlockMoveRateDown)
 	{
 		MoveBy(Vei2(0, 1));
 		BlockMoveCounterDown = 0;
-	}
-	if (BlockMoveCounterSide >= BlockMoveRateSide && (delta_loc == Vei2{ -1, 0 } || delta_loc == Vei2{ 1, 0 }))
-	{
-		MoveBy(delta_loc);
-		BlockMoveCounterSide = 0;
 	}
 }
 
@@ -250,6 +265,7 @@ Blocks::BlockType Blocks::RandomType(std::mt19937& rng)
 	if (random == 0)
 	{
 		type = BlockType::I;
+		
 	}
 	else if (random == 1)
 	{
@@ -278,78 +294,120 @@ Blocks::BlockType Blocks::RandomType(std::mt19937& rng)
 	return type;
 }
 
-Color Blocks::RandomColor(std::mt19937& rng, const Board& brd)
+Color Blocks::SetColor(const Board& brd)
 {
-	std::uniform_int_distribution<int> randtype(0, 3);
-	int random = randtype(rng);
-
 	if (brd.GetLvl() == Board::Levels::Level1)
 	{
-		if (random == 0)
+		if (type == BlockType::Brick)
 		{
 			c = Colors::Blue;
 			ContentColor = Board::CellContent::Blue;
 		}
-		else if (random == 1)
+		else if (type == BlockType::L)
 		{
 			c = Colors::Cyan;
 			ContentColor = Board::CellContent::Cyan;
 		}
-		else if (random == 2)
+		else if (type == BlockType::HalfCross)
 		{
 			c = Colors::MidnightBlue;
 			ContentColor = Board::CellContent::MidnightBlue;
 		}
-		else if (random == 3)
+		else if (type == BlockType::I)
 		{
 			c = Colors::White;
 			ContentColor = Board::CellContent::White;
 		}
+		else if (type == BlockType::N)
+		{
+			c = Colors::LightGray;
+			ContentColor = Board::CellContent::LightGray;
+		}
+		else if (type == BlockType::MirrorN)
+		{
+			c = Colors::Gray;
+			ContentColor = Board::CellContent::Gray;
+		}
+		else if (type == BlockType::MirrorL)
+		{
+			c = Colors::Teal;
+			ContentColor = Board::CellContent::Teal;
+		}
 	}
 	else if (brd.GetLvl() == Board::Levels::Level2)
 	{
-		if (random == 0)
+		if (type == BlockType::Brick)
 		{
 			c = Colors::Green;
 			ContentColor = Board::CellContent::Green;
 		}
-		else if (random == 1)
+		else if (type == BlockType::L)
 		{
 			c = Colors::DarkGreen;
 			ContentColor = Board::CellContent::DarkGreen;
 		}
-		else if (random == 2)
+		else if (type == BlockType::HalfCross)
 		{
 			c = Colors::LawnGreen;
 			ContentColor = Board::CellContent::LawnGreen;
 		}
-		else if (random == 3)
+		else if (type == BlockType::I)
 		{
 			c = Colors::Yellow;
 			ContentColor = Board::CellContent::Yellow;
 		}
+		else if (type == BlockType::N)
+		{
+			c = Colors::Lime;
+			ContentColor = Board::CellContent::Lime;
+		}
+		else if (type == BlockType::MirrorN)
+		{
+			c = Colors::LightGreen;
+			ContentColor = Board::CellContent::LightGreen;
+		}
+		else if (type == BlockType::MirrorL)
+		{
+			c = Colors::SpringGreen;
+			ContentColor = Board::CellContent::SpringGreen;
+		}
 	}
 	else if (brd.GetLvl() == Board::Levels::Level3)
 	{
-		if (random == 0)
+		if (type == BlockType::Brick)
 		{
 			c = Colors::DarkRed;
 			ContentColor = Board::CellContent::DarkRed;
 		}
-		else if (random == 1)
+		else if (type == BlockType::L)
 		{
 			c = Colors::Scarlet;
 			ContentColor = Board::CellContent::Scarlet;
 		}
-		else if (random == 2)
+		else if (type == BlockType::HalfCross)
 		{
 			c = Colors::Red;
 			ContentColor = Board::CellContent::Red;
 		}
-		else if (random == 3)
+		else if (type == BlockType::I)
 		{
 			c = Colors::Orange;
 			ContentColor = Board::CellContent::Orange;
+		}
+		else if (type == BlockType::N)
+		{
+			c = Colors::Purple;
+			ContentColor = Board::CellContent::Purple;
+		}
+		else if (type == BlockType::MirrorN)
+		{
+			c = Colors::DarkMagneta;
+			ContentColor = Board::CellContent::DarkMagneta;
+		}
+		else if (type == BlockType::MirrorL)
+		{
+			c = Colors::Chocolate;
+			ContentColor = Board::CellContent::Chocolate;
 		}
 	}
 	return c;

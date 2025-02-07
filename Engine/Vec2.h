@@ -42,7 +42,7 @@ public:
 	{
 		return *this = *this - rhs;
 	}
-	bool operator ==(const Vec2_& rhs)
+	bool operator ==(const Vec2_& rhs) const noexcept
 	{
 		return (x == rhs.x && y == rhs.y);
 	}

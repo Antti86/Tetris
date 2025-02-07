@@ -34,10 +34,10 @@ void Game::Go()
 {
 	gfx.BeginFrame();
 	
-	float elapsedtime = ft.Mark();
+	elapsedtime = ft.Mark();
 	while (elapsedtime > 0.0f)
 	{
-		float dt = std::min(0.0025f, elapsedtime);
+		dt = std::min(0.0025f, elapsedtime);
 		UpdateModel(dt);
 		elapsedtime -= dt;
 	}
@@ -73,11 +73,20 @@ void Game::UpdateModel(float dt)
 		
 		if (ActiveBlocks.CollisionDown(brd))
 		{
-			ActiveBlocks.Movement(delta_loc, wnd.kbd, brd, dt, settings);
-			ActiveBlocks.TransferBlocksToBoard(brd);
-			ActiveBlocks = Buffer;
-			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
-			brd.FullLine();
+
+			if ((StartTime += dt) <= EndTime)
+			{
+				
+				ActiveBlocks.SideMovement(delta_loc, wnd.kbd, brd, dt, settings);
+			}
+			else
+			{
+				StartTime = 0.0f;
+				ActiveBlocks.TransferBlocksToBoard(brd);
+				ActiveBlocks = Buffer;
+				Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+				brd.FullLine();
+			}
 		}
 		else
 		{
@@ -86,6 +95,13 @@ void Game::UpdateModel(float dt)
 		if (brd.FailCondition())
 		{
 			state = GameState::GameOver;
+		}
+		if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+		{
+			brd.ResetBoard();
+			ActiveBlocks = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+			Buffer = Blocks(Vei2(brd.GetGridWidth() / 2 - 2, 0), brd);
+			state = GameState::MainMenu;
 		}
 	}
 	else if (state == GameState::HighScore)
@@ -123,6 +139,8 @@ void Game::UpdateModel(float dt)
 
 
 }
+
+
 
 void Game::ComposeFrame()
 {
